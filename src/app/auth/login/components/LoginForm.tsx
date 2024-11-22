@@ -41,11 +41,8 @@ export default function LoginForm () {
         // Realiza una petición POST con los datos del formulario
         const response = await login(formData);
         setMessage(response.mensaje);
-        console.log(response)
 
         if (response.admin.codigo == 1) {
-            console.log("Login exitoso:", response);
-            // Guarda el objeto 'response' en el localStorage
             localStorage.setItem('usuario', JSON.stringify(response));
             setCodigo(1);
             router.push("https://diancrochet-administrador.vercel.app/ordenes/all-ordens");
