@@ -30,6 +30,7 @@
 
     const usuario = localStorage.getItem("usuario");
     const [showModal, setShowModal] = useState(false);
+    console.log(usuario);
 
     const handleDelete = async () => {
         try {
