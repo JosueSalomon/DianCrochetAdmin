@@ -1,6 +1,6 @@
 "use client";
 
-import Sidebar from "../../../components/Sidebar";
+import Sidebar from "../../../components/sidebar";
 import Headerbar from "../../../components/HeaderAdmin";
 import OrdenForm from "../components/posts/OrdenForm";
 export default function Dash() {
