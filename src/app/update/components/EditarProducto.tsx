@@ -130,9 +130,20 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
       const handleKeywordRemove = (keyword: string) => {
         setKeywords((prevKeywords) => {
           const updatedKeywords = prevKeywords?.filter((k) => k !== keyword) || null;
+          setEditableProduct((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  keywords: updatedKeywords,
+                }
+              : null
+          );
+      
           return updatedKeywords && updatedKeywords.length > 0 ? updatedKeywords : null;
         });
       };
+      
+      
     
 
          // Actualizar el estado de sizes cuando productoInfo.grosores cambie
