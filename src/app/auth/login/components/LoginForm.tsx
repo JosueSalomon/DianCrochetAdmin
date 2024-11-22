@@ -48,7 +48,7 @@ export default function LoginForm () {
             // Guarda el objeto 'response' en el localStorage
             localStorage.setItem('usuario', JSON.stringify(response));
             setCodigo(1);
-            router.push("https://dian-crochet-admin-five.vercel.app/ordenes/all-ordens");
+            router.push("https://diancrochet-administrador.vercel.app/ordenes/all-ordens");
         } else if (response.admin.codigo == 2) {
             setCodigo(2);
             setCorreoError("Usuario no administrativo");
