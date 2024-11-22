@@ -7,7 +7,7 @@ import Navbar from "components/navbar";
 import EditarMaterial from "../components/EditarMaterial";
 import EditarProducto from "../components/EditarProducto";
 import HeaderAdmin from "components/HeaderAdmin";
-import SideBar from "components/Sidebar";
+import SideBar from "components/sidebar";
 
 // Define el tipo de la estructura de la respuesta de la API
 interface ProductoInfo {
