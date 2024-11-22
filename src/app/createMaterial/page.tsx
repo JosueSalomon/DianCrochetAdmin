@@ -3,7 +3,7 @@
 import Footer from "components/Footer";
 import HeaderAdmin from 'components/HeaderAdmin'
 import MaterialForm from "./components/MaterialesForm";
-import SideBar from '../../components/sidebar';
+import SideBar from 'components/sidebar'
 
 
 export default function Dashboard() {
