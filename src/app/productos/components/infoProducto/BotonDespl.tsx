@@ -32,7 +32,7 @@ export default function BotonDespl ({indexProduct} : {indexProduct : number}) {
     
         if (usuario) {
             setEdit(index);
-            router.push(`http://localhost:3000/update/${index}`);
+            router.push(`https://dian-crochet-admin-five.vercel.app/update/${index}`);
         } else {
             console.log("No hay datos en localStorage. Navegación bloqueada.");
             alert("Debes iniciar sesión para editar un producto.");
