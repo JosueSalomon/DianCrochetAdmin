@@ -41,6 +41,7 @@ export default function LoginForm () {
         // Realiza una petición POST con los datos del formulario
         const response = await login(formData);
         setMessage(response.mensaje);
+        console.log(response)
 
         if (response.admin.codigo == 1) {
             console.log("Login exitoso:", response);
