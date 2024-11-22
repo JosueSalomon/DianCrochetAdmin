@@ -2,7 +2,7 @@
 
 
 import HeaderAdmin from 'components/HeaderAdmin'
-import SideBar from 'components/sidebar'
+import Sidebar from 'components/Sidebar'
 import Titulo from './components/Titulo'
 import Interactions from './components/Interactions'
 
@@ -13,7 +13,7 @@ export default function productos () {
                 <HeaderAdmin/>
             </div>
             
-                <SideBar/>
+                <Sidebar/>
 
             <div className='flex h-full w-full pt-[5%] pl-[18%]'>
                 <div className="h-full z-2 w-full bg-[#COCOCO]">
