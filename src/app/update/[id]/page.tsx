@@ -7,7 +7,7 @@ import Navbar from "components/navbar";
 import EditarMaterial from "../components/EditarMaterial";
 import EditarProducto from "../components/EditarProducto";
 import HeaderAdmin from "components/HeaderAdmin";
-import SideBar from "components/Sidebar";
+import Sidebar from "components/Sidebar";
 
 // Define el tipo de la estructura de la respuesta de la API
 interface ProductoInfo {
@@ -86,6 +86,17 @@ export default function Dashboard() {
        <div className="h-[12%] w-full">
                 <HeaderAdmin/>
             </div>
+            <Sidebar/>
+      <main className="bg-slate-50 flex-grow justify-center items-center mt-[4.3%] h-full">
+        <div className="flex justify-center items-center">
+          {tipoProd === "Material" ? (
+            <EditarMaterial id={id as string} />
+          ) : tipoProd === "Producto" ? (
+            <EditarProducto id={id as string} />
+          ) : (
+            <p>Tipo de producto no soportado</p>
+          )}
+        </div>
             <div className="flex flex-grow">
               <SideBar/>
             <main className="flex-grow p-4 lg:ml-64 bg-slate-50 mt-[5%]">
