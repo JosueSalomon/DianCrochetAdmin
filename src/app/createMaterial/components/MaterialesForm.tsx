@@ -430,7 +430,7 @@ const MaterialForm: React.FC = () => {
               
             }}
           >
-            Cancelar
+            Volver
           </button>
           <button
               type="button" // Change to "button" to avoid implicit form submission

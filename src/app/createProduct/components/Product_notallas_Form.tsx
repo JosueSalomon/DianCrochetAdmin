@@ -436,7 +436,7 @@ const ProductForm: React.FC = () => {
               
             }}
           >
-            Cancelar
+            Volver
           </button>
           <button
               type="button"

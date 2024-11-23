@@ -642,7 +642,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
               onClick={handleCancel}
             
             >
-              Cancelar
+              Volver
             </button>
             
             

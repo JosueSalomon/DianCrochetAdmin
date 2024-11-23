@@ -610,7 +610,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-purple-400"
                 onClick={handleCancel}
               >
-                Cancelar
+                Volver
               </button>
   
           </div>
