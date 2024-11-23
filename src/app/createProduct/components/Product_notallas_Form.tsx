@@ -19,14 +19,14 @@ const ProductForm: React.FC = () => {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [keywordInput, setkeywordInput] = useState("");
-  const [keywords, setkeywords] = useState<string[]>([]);
+  const [keywords, setkeywords] = useState<string[] | null>([]); 
 
   // Estados para manejar las categorías y el menú
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
+    const formattedKeywords = keywords && keywords.length > 0 ? keywords : null;
     // Carga de categorías
     useEffect(() => {
       const getCategories = async () => {
@@ -99,15 +99,23 @@ const ProductForm: React.FC = () => {
   const handleKeywordAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      if (keywordInput.trim() && !keywords.includes(keywordInput.trim())) {
-        setkeywords([...keywords, keywordInput.trim()]);
+      const trimmedInput = keywordInput.trim();
+  
+      if (trimmedInput && (!keywords || !keywords.includes(trimmedInput))) {
+        setkeywords((prevKeywords) =>
+          prevKeywords ? [...prevKeywords, trimmedInput] : [trimmedInput]
+        );
         setkeywordInput("");
       }
     }
   };
 
   const handleKeywordRemove = (keyword: string) => {
-    setkeywords((prevKeywords) => prevKeywords.filter((cat) => cat !== keyword));
+    setkeywords((prevKeywords) => {
+      if (!prevKeywords) return null; // Si ya es null, mantener null
+      const updatedKeywords = prevKeywords.filter((k) => k !== keyword);
+      return updatedKeywords.length > 0 ? updatedKeywords : null; // Volver a null si el arreglo queda vacío
+    });
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -136,7 +144,7 @@ const ProductForm: React.FC = () => {
               Object.entries(sizeQuantities).map(([size, quantity]) => [size, quantity === "0" || quantity.trim() === "" ? null : parseInt(quantity, 10)])
             ),
           },
-          keywords,
+          keywords: formattedKeywords,
         };
         console.log("Enviando producto con talla:", newProduct);
         const response = await createProductWithSize(newProduct);
@@ -150,7 +158,7 @@ const ProductForm: React.FC = () => {
           categories: selectedCategoryIds.map((id) => id.toString()),
           mainImage: mainImage || "",
           galleryImages:galleryImages.length > 0 ? galleryImages : null,
-          keywords,
+          keywords: formattedKeywords,
         };
         console.log("Enviando producto sin talla:", newProduct);
         const response = await createProductWithoutSize(newProduct);
@@ -335,26 +343,29 @@ const ProductForm: React.FC = () => {
 
           {/* Keywoard Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Keyword</label>
-            <input
-              type="text"
-              value={keywordInput}
-              onChange={(e) => setkeywordInput(e.target.value)}
-              
-              onKeyDown={handleKeywordAdd}
-              className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
-              placeholder="Escribe y presiona Enter o Espacio para agregar"
-            />
-            <div className="flex flex-wrap gap-2 mt-2">
-              {keywords.map((keywords, index) => (
-                <span key={index} className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center">
-                  {keywords}
-                  <button
-                    type="button"
-                    onClick={() => handleKeywordRemove(keywords)}
-                    className="ml-2 text-red-500 hover:text-red-700"
-                  >
-                    &times;
+          <label className="block text-sm font-medium text-gray-700">Keyword</label>
+              <input
+                type="text"
+                value={keywordInput}
+                onChange={(e) => setkeywordInput(e.target.value)}
+                onKeyDown={handleKeywordAdd}
+                className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
+                placeholder="Escribe y presiona Enter o Espacio para agregar"
+              />
+              <div className="flex flex-wrap gap-2 mt-2">
+                {keywords &&
+                  keywords.map((keyword, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center"
+                    >
+                      {keyword}
+                      <button
+                        type="button"
+                        onClick={() => handleKeywordRemove(keyword)}
+                        className="ml-2 text-red-500 hover:text-red-700"
+                      >
+                        &times;
                   </button>
                 </span>
               ))}
