@@ -265,7 +265,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
       };
 
     return (
-        <div className="p-8 bg-gray-50 rounded-lg shadow-lg max-w-5xl mx-auto">
+        <div className="p-8 bg-gray-50 rounded-lg shadow-lg max-w-5xl">
         <h2 className="text-2xl font-koulen mb-6 text-black">
         {isEditing ? `Editar Material ${productoInfo?.nombre_prod}` : productoInfo?.nombre_prod}
         </h2>

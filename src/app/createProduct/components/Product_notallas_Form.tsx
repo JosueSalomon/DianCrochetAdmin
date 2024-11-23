@@ -192,269 +192,270 @@ const ProductForm: React.FC = () => {
 
 
   return (
-    <div className="p-8 bg-gray-50 rounded-lg shadow-lg max-w-5xl mx-auto">
-      <h2 className="text-2xl font-koulen mb-6 text-black">Agregar Nuevo Producto</h2>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-6" ref={formRef} onSubmit={handleFormSubmit}>
+    <div className="p-6 md:p-8 bg-gray-50 rounded-lg shadow-lg max-w-full md:max-w-5xl mx-auto">
+  <h2 className="text-xl md:text-2xl font-koulen mb-4 md:mb-6 text-black text-center md:text-left">
+    Agregar Nuevo Producto
+  </h2>
+  <form className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6" ref={formRef} onSubmit={handleFormSubmit}>
+    {/* Columna Izquierda */}
+    <div className="space-y-4 md:space-y-6">
+      <div>
+        <label className="block text-sm font-medium text-black">Tipo Producto</label>
+        <select
+          id="productType"
+          value={productType}
+          onChange={(e) => handleProductTypeChange(e.target.value)}
+          className="p-2 border text-black rounded-lg w-full"
+        >
+          <option value="Producto sin talla">Producto sin talla</option>
+          <option value="Producto con talla">Producto con talla</option>
+        </select>
+      </div>
 
-        {/* Tipo Producto Accordion */}
-        <div className="space-y-6">
-          <label className="block text-sm font-medium text-black">Tipo Producto</label>
-          <div className="flex space-x-4">
-            <select
-              id="productType"
-              value={productType}
-              onChange={(e) => handleProductTypeChange(e.target.value)}
-              className="p-2 border w text-black rounded-lg w-full"
-            >
-              <option className="text-black" value="Producto sin talla">Producto sin talla</option>
-              <option value="Producto con talla">Producto con talla</option>
-            </select>
-          </div>
-          
-          {/* Categorías (Carrusel) */}
-          <div className="relative text-start" ref={dropdownRef}>
-              <label htmlFor="categories" className="block text-sm font-medium text-gray-700">
-                Categorías
-              </label>
-              <button
-                type="button"
-                className="w-full p-2 bg-white text-start rounded-lg border text-black mt-[8px]"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                {selectedCategoryIds.length > 0
-                  ? `Seleccionadas (${selectedCategoryIds.length})`
-                  : "Selecciona categorías"}
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute z-10 mt-2 w-full bg-white rounded-lg ">
-                  <div className="max-h-60 overflow-y-auto p-2">
-                    {categories.map((category) => (
-                      <div key={category.ID_CATEGORIA} className="flex items-center space-x-2 p-1">
-                        <input
-                          type="checkbox"
-                          id={`category-${category.ID_CATEGORIA}`}
-                          value={category.ID_CATEGORIA}
-                          checked={selectedCategoryIds.includes(category.ID_CATEGORIA)}
-                          onChange={() => handleCategoryToggle(category.ID_CATEGORIA)}
-                          className="text-black"
-                        />
-                        <label htmlFor={`category-${category.ID_CATEGORIA}`} className="text-black">
-                          {category.CATEGORIA}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+      <div className="relative text-start" ref={dropdownRef}>
+        <label htmlFor="categories" className="block text-sm font-medium text-gray-700">Categorías</label>
+        <button
+          type="button"
+          className="w-full p-2 bg-white text-start rounded-lg border text-black mt-2"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          {selectedCategoryIds.length > 0
+            ? `Seleccionadas (${selectedCategoryIds.length})`
+            : "Selecciona categorías"}
+        </button>
+        {isDropdownOpen && (
+          <div className="absolute z-10 mt-2 w-full bg-white rounded-lg shadow-lg">
+            <div className="max-h-60 overflow-y-auto p-2">
+              {categories.map((category) => (
+                <div key={category.ID_CATEGORIA} className="flex items-center space-x-2 p-1">
+                  <input
+                    type="checkbox"
+                    id={`category-${category.ID_CATEGORIA}`}
+                    value={category.ID_CATEGORIA}
+                    checked={selectedCategoryIds.includes(category.ID_CATEGORIA)}
+                    onChange={() => handleCategoryToggle(category.ID_CATEGORIA)}
+                    className="text-black"
+                  />
+                  <label htmlFor={`category-${category.ID_CATEGORIA}`} className="text-black">
+                    {category.CATEGORIA}
+                  </label>
                 </div>
-              )}
+              ))}
             </div>
-          {/* Product Name */}
+          </div>
+        )}
+      </div>
+
+      {/* Nombre del Producto */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Nombre del Producto</label>
+        <input
+          type="text"
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
+          required
+          className="mt-2 p-2 border border-gray-300 rounded-lg w-full text-black"
+          placeholder="Escribe el nombre del producto"
+        />
+      </div>
+
+      {/* Precio y Cantidad */}
+      {productType === "Producto sin talla" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Nombre del Producto</label>
+            <label className="block text-sm font-medium text-gray-700">Precio</label>
             <input
-              type="text"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               required
               className="mt-2 p-2 border border-gray-300 rounded-lg w-full text-black"
-              placeholder="Escribe el nombre del producto"
+              placeholder="Precio en Lempiras"
+              min="0"
+              step="0.01"
             />
           </div>
-
-          {/* Price and Stock */}
-          {productType === "Producto sin talla" ? (
-            <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Cantidad</label>
+            <input
+              type="number"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              required
+              className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
+              placeholder="Cantidad disponible"
+              min="0"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {["XL", "L", "M", "S", "XS"].map((size) => (
+            <div key={size} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Precio</label>
+                <label className="block text-sm font-medium text-gray-700">Precio {size}</label>
                 <input
                   type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                  className="mt-2 p-2 text-black border border-gray-300 rounded-lg w-full"
+                  value={sizePrices[size as keyof typeof sizePrices]}
+                  onChange={(e) => setSizePrices({ ...sizePrices, [size]: e.target.value })}
+                  className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
                   placeholder="Precio en Lempiras"
                   min="0"
                   step="0.01"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Cantidad</label>
+                <label className="block text-sm font-medium text-gray-700">Cantidad {size}</label>
                 <input
                   type="number"
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value)}
-                  required
+                  value={sizeQuantities[size as keyof typeof sizeQuantities]}
+                  onChange={(e) => setSizeQuantities({ ...sizeQuantities, [size]: e.target.value })}
                   className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
                   placeholder="Cantidad disponible"
                   min="0"
                 />
               </div>
             </div>
-          ) : (
-            <div className="mt-4 space-y-4">
-              {["XL", "L", "M", "S", "XS"].map((size) => (
-                <div key={size} className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Precio {size}</label>
-                    <input
-                      type="number"
-                      value={sizePrices[size as keyof typeof sizePrices]}
-                      onChange={(e) => setSizePrices({ ...sizePrices, [size]: e.target.value })}
-                      className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
-                      placeholder="Precio en Lempiras"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Cantidad {size}</label>
-                    <input
-                      type="number"
-                      value={sizeQuantities[size as keyof typeof sizeQuantities]}
-                      onChange={(e) => setSizeQuantities({ ...sizeQuantities, [size]: e.target.value })}
-                      className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
-                      placeholder="Cantidad disponible"
-                      min="0"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              
-              className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
-              placeholder="Describe el producto"
-            />
-          </div>
-
-          {/* Keywoard Input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Keyword</label>
-            <input
-              type="text"
-              value={keywordInput}
-              onChange={(e) => setkeywordInput(e.target.value)}
-              
-              onKeyDown={handleKeywordAdd}
-              className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
-              placeholder="Escribe y presiona Enter o Espacio para agregar"
-            />
-            <div className="flex flex-wrap gap-2 mt-2">
-              {keywords.map((keywords, index) => (
-                <span key={index} className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center">
-                  {keywords}
-                  <button
-                    type="button"
-                    onClick={() => handleKeywordRemove(keywords)}
-                    className="ml-2 text-red-500 hover:text-red-700"
-                  >
-                    &times;
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-
-        {/* Right Column - Image Uploads */}
-        <div className="space-y-6">
-          {/* Main Image Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Foto Principal del Producto</label>
-            <div
-              className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
-              onClick={() => handleOpenModal(false)}
-            >
-              {mainImage ? (
-                <Image src={mainImage} alt="Main Preview" width={250} height={250} className="mx-auto" style={{ width: 'auto', height: 'auto' }}/>
-              ) : (
-                <p>Click para cargar imagen principal</p>
-                
-              )}
-            
-            </div>
-          </div>
-
-          {/* Gallery Image Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Galería de Producto</label>
-            <div
-              className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
-              onClick={() => handleOpenModal(true)}
-            >
-              {galleryImages.length > 0 ? (
-                <div className="grid grid-cols-3 gap-2">
-                  {galleryImages.map((imgUrl, index) => (
-                    <div key={index} className="relative">
-                      <Image
-                        src={imgUrl}
-                        alt={`Gallery Preview ${index + 1}`}
-                        width={100}
-                        height={100}
-                        className="w-full max-w-[100px]"
-                        style={{ width: 'auto', height: 'auto' }}
-                      />
-                      <button
-                        onClick={() => handleRemoveGalleryImage(imgUrl)}
-                        className="absolute top-0 right-0 bg-red-500 text-white px-1 rounded-full"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>Click para cargar imágenes de galería</p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="col-span-2 flex justify-end space-x-3 mt-4">
-          <button
-            type="button"
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-            onClick={() => {
-              
-            }}
-          >
-            Cancelar
-          </button>
-          <button
-              type="button"
-              disabled={!mainImage}
-              className={`px-4 py-2 rounded-lg ${
-                mainImage
-                  ? "bg-black text-white hover:bg-gray-800"
-                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
-              }`}
-              onClick={handleCreateProduct}
-               // Deshabilita el botón si no hay imagen
-            >
-              Crear
-            </button>
-
-        </div>
-      </form>
-
-      {/* Upload Modal */}
-      {isModalOpen && (
-        <UploadModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onImageUpload={handleImageUpload}
-          existingImages={isGallery ? galleryImages : mainImage ? [mainImage] : []}
-          isGallery={isGallery}
-        />
       )}
+
+      {/* Descripción */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Descripción</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
+          placeholder="Describe el producto"
+        />
+      </div>
+
+      {/* Keywords */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Keyword</label>
+        <input
+          type="text"
+          value={keywordInput}
+          onChange={(e) => setkeywordInput(e.target.value)}
+          onKeyDown={handleKeywordAdd}
+          className="mt-2 p-2 border text-black border-gray-300 rounded-lg w-full"
+          placeholder="Escribe y presiona Enter o Espacio para agregar"
+        />
+        <div className="flex flex-wrap gap-2 mt-2">
+          {keywords.map((keywords, index) => (
+            <span
+              key={index}
+              className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center"
+            >
+              {keywords}
+              <button
+                type="button"
+                onClick={() => handleKeywordRemove(keywords)}
+                className="ml-2 text-red-500 hover:text-red-700"
+              >
+                &times;
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
+
+    {/* Columna Derecha */}
+    <div className="space-y-4 md:space-y-6">
+      {/* Foto Principal */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Foto Principal del Producto</label>
+        <div
+          className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
+          onClick={() => handleOpenModal(false)}
+        >
+          {mainImage ? (
+            <Image
+              src={mainImage}
+              alt="Main Preview"
+              width={250}
+              height={250}
+              className="mx-auto"
+              style={{ width: "auto", height: "auto" }}
+            />
+          ) : (
+            <p>Click para cargar imagen principal</p>
+          )}
+        </div>
+      </div>
+
+      {/* Galería */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Galería de Producto</label>
+        <div
+          className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
+          onClick={() => handleOpenModal(true)}
+        >
+          {galleryImages.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {galleryImages.map((imgUrl, index) => (
+                <div key={index} className="relative">
+                  <Image
+                    src={imgUrl}
+                    alt={`Gallery Preview ${index + 1}`}
+                    width={100}
+                    height={100}
+                    className="w-full max-w-[100px]"
+                    style={{ width: "auto", height: "auto" }}
+                  />
+                  <button
+                    onClick={() => handleRemoveGalleryImage(imgUrl)}
+                    className="absolute top-0 right-0 bg-red-500 text-white px-1 rounded-full"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Click para cargar imágenes de galería</p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* Botones */}
+    <div className="col-span-1 lg:col-span-2 flex justify-center md:justify-end space-x-3 mt-4">
+      <button
+        type="button"
+        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+        onClick={() => {}}
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        disabled={!mainImage}
+        className={`px-4 py-2 rounded-lg ${
+          mainImage
+            ? "bg-black text-white hover:bg-gray-800"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"
+        }`}
+        onClick={handleCreateProduct}
+      >
+        Crear
+      </button>
+    </div>
+  </form>
+
+  {isModalOpen && (
+    <UploadModal
+      isOpen={isModalOpen}
+      onClose={handleCloseModal}
+      onImageUpload={handleImageUpload}
+      existingImages={isGallery ? galleryImages : mainImage ? [mainImage] : []}
+      isGallery={isGallery}
+    />
+  )}
+</div>
+
   );
 };
 

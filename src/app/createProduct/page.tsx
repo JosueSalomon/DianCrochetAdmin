@@ -3,7 +3,7 @@
 import Footer from 'components/Footer';
 import ProductForm from './components/Product_notallas_Form';
 import HeaderAdmin from 'components/HeaderAdmin';
-import SideBar from 'components/Sidebar';
+
 
 export default function Dashboard() {
   return (
@@ -14,12 +14,11 @@ export default function Dashboard() {
       </div>
 
       {/* Contenedor principal */}
-      <div className="flex flex-grow">
-        {/* SideBar */}
-        <SideBar />
+      <div className="flex h-full w-full bg-slate-50">
+      
 
         {/* Contenido principal */}
-        <main className="flex-grow p-4 lg:ml-64 bg-slate-50">
+        <main className="flex-grow p-4 bg-slate-50">
           <div className="flex justify-center items-center mt-[5%]">
             <ProductForm />
           </div>
