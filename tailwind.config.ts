@@ -16,11 +16,14 @@ const config: Config = {
     },
     fontFamily: {
       lekton: ['var(--lekton)'],
+      rubik: ['var(--rubik)'],
       koulen: ['var(--koulen)'],
       inter: ['var(--inter)'],
       crimson: ['var(--crimson)'],
       roboto:['var(--roboto)'],
-      robotoMono:['var(--robotoMono)']
+      robotoMono:['var(--robotoMono)'],
+      opensans: ['var(--opensans)'],
+      opensansm: ['var(--opensansm)']
     },
   },
   plugins: [forms],

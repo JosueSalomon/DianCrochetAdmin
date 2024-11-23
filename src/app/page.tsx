@@ -1,3 +1,4 @@
+//Ola como ta
 'use client';
 
 import Footer from 'components/Footer';
@@ -10,7 +11,7 @@ export default function Dashboard() {
       <Navbar/>  
       <main className="bg-slate-50 flex-grow w-full mt-10">
         <div className='flex justify-center items-center'>
-          <h1 className='size-96 text-black'>HOLA</h1>
+          <h1 className='size-96 text-black'></h1>
         </div>
       </main>
       <Footer />

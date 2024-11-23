@@ -22,6 +22,21 @@ const koulen = localFont({
   variable: "--koulen",
   weight: "400",
 });
+const opensans = localFont({
+  src: "../public/fonts/OpenSans.ttf",
+  variable: "--opensans",
+  weight: "400",
+});
+const opensansm = localFont({
+  src: "../public/fonts/OpenSansMedium.ttf",
+  variable: "--opensansm",
+  weight: "medium",
+});
+const rubik = localFont({
+  src: "../public/fonts/Rubik.ttf",
+  variable: "--rubik",
+  weight: "400",
+});
 const inter = localFont({
   src: "../public/fonts/Inter.ttf",
   variable: "--inter",
@@ -60,7 +75,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} ${crimsom.variable}  ${robotoMono.variable} ${roboto.variable}  ${lekton.variable} ${koulen.variable} ${inter.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${crimsom.variable}  ${robotoMono.variable} ${roboto.variable}  ${lekton.variable} ${koulen.variable} ${rubik.variable} ${opensans.variable} ${opensansm.variable} ${inter.variable} antialiased`}
       >
         {children}
       </body>

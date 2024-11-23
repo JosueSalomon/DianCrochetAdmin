@@ -5,7 +5,7 @@ import { getProductosPorTipo, getProducts } from '@services/product';
 import { InfoProductos } from '@interfaces/product';
 import DetalleProducto from './infoProducto/DetalleProducto';
 
-export default function Products ({indexType} : {indexType : number}) {
+export default function Products ({indexType} : Readonly<{indexType : number}>) {
     const [productos, setProductos] = useState<InfoProductos[]>([]);
     const [productsSplit, setProductsSplit] = useState(0);
 

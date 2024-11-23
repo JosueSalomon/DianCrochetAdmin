@@ -35,7 +35,7 @@ export default function Interactions () {
 
     return (
         <div className="w-full h-full">
-            <div className="flex justify-between items-center w-full h-[15%] pt-3">
+            <div className="flex justify-between items-center w-full h-[10%]">
                 <div className=" w-[25%] h-full px-3 flex-col ">
                     
                     <div ref={menuRef} className="relative">

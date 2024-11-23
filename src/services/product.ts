@@ -105,3 +105,21 @@ export const getProductosPorTipo = async (id: number): Promise<InfoProductos[]> 
   }
 };
 
+export const deleteProduct = async (id: number, correo: string | null) => {
+  console.log(id, correo)
+  const res = await fetch(`${API_URL}/delete/producto/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ correo }), 
+  });
+
+  if (!res.ok) {
+    throw new Error("Error al eliminar el producto");
+  }
+
+  const data = await res.json();
+  return data; 
+};
+

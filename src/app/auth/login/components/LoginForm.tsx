@@ -34,7 +34,6 @@ export default function LoginForm () {
     //Envío del formulario
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Datos enviados:", formData);
         setLoading(true);
         setCorreoError("");
         setContrasenaError("");
@@ -42,14 +41,11 @@ export default function LoginForm () {
         // Realiza una petición POST con los datos del formulario
         const response = await login(formData);
         setMessage(response.mensaje);
-        console.log("Respuesta:", response);
 
         if (response.admin.codigo == 1) {
-            console.log("Login exitoso:", response);
-            // Guarda el objeto 'response' en el localStorage
-            localStorage.setItem('loginResponse', JSON.stringify(response));
+            localStorage.setItem('usuario', JSON.stringify(response));
             setCodigo(1);
-            router.push("http://localhost:3000/");
+            router.push("https://diancrochet-administrador.vercel.app/ordenes/all-ordens");
         } else if (response.admin.codigo == 2) {
             setCodigo(2);
             setCorreoError("Usuario no administrativo");
