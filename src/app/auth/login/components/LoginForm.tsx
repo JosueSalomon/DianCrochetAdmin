@@ -43,11 +43,9 @@ export default function LoginForm () {
         setMessage(response.mensaje);
 
         if (response.admin.codigo == 1) {
-            console.log("Login exitoso:", response);
-            // Guarda el objeto 'response' en el localStorage
             localStorage.setItem('usuario', JSON.stringify(response));
             setCodigo(1);
-            router.push("http://localhost:3000/ordenes/all-ordens");
+            router.push("https://diancrochet-administrador.vercel.app/ordenes/all-ordens");
         } else if (response.admin.codigo == 2) {
             setCodigo(2);
             setCorreoError("Usuario no administrativo");

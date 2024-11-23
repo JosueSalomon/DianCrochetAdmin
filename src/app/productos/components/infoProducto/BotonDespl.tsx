@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useRouter } from 'next/navigation';
 import Modal from '../modal/modal'
 
-export default function BotonDespl ({indexProduct} : {indexProduct : number}) {
+export default function BotonDespl ({indexProduct} : Readonly<{indexProduct : number}>) {
     const [isOpen, setIsOpen] = useState(false);
     const botonRef = useRef<HTMLDivElement>(null);
     const [, setEdit] = useState(0);
@@ -32,7 +32,7 @@ export default function BotonDespl ({indexProduct} : {indexProduct : number}) {
     
         if (usuario) {
             setEdit(index);
-            router.push(`http://localhost:3000/update/${index}`);
+            router.push(`https://diancrochet-administrador.vercel.app/update/${index}`);
         } else {
             console.log("No hay datos en localStorage. Navegación bloqueada.");
             alert("Debes iniciar sesión para editar un producto.");

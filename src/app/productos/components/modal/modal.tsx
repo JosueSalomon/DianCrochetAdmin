@@ -30,6 +30,7 @@
 
     const usuario = localStorage.getItem("usuario");
     const [showModal, setShowModal] = useState(false);
+    console.log(usuario);
 
     const handleDelete = async () => {
         try {
@@ -37,7 +38,7 @@
                 const usuarioJ = JSON.parse(usuario);
                 const res = await deleteProduct(index, usuarioJ.admin.correo);
                 console.log(res);
-                window.location.href = 'http://localhost:3000/productos';
+                window.location.href = 'https://diancrochet-administrador.vercel.app/productos';
                 setShowModal(true);
                 if(showModal){
                     setOpen(false);

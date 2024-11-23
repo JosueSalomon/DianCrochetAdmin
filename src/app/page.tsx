@@ -1,3 +1,4 @@
+//Ola como ta
 'use client';
 
 import Footer from 'components/Footer';
