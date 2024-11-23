@@ -23,7 +23,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
     const [isGallery, setIsGallery] = useState(false);
     const [mainImage, setMainImage] = useState<string | null>(productoInfo?.imagen_principal || null);
     // Inicializar el estado de los grosores con la data de productoInfo.grosores
-    const [sizes, setSizes] = useState<Record<string, { cantidad: number, precio: number }>>({});
+    const [, setSizes] = useState<Record<string, { cantidad: number, precio: number }>>({});
     //const [editing, setEditing] = useState(true);
     // Mapeo entre los nombres que vienen del backend y los que queremos mostrar
     const sizeMap: Record<string, string> = {
@@ -365,7 +365,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
                   <div className="mt-4 space-y-4">
                         {allSizes.map((size) => {
                           // Comprobamos si el nombre del tamaño existe en los grosores del backend
-                          const backendSize = Object.keys(sizes).find(key => sizeMap[key] === size);
+                          const backendSize = Object.keys(sizeMap).find(key => sizeMap[key] === size);
 
                           return (
                             <div key={size} className="grid grid-cols-2 gap-4">
