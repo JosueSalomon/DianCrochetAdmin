@@ -3,7 +3,7 @@
 import Footer from 'components/Footer';
 import ProductForm from './components/Product_notallas_Form';
 import HeaderAdmin from 'components/HeaderAdmin';
-import SideBar from 'components/sidebar';
+import SideBar from 'components/Sidebar';
 
 export default function Dashboard() {
   return (
