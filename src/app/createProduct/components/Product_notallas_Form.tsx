@@ -433,7 +433,7 @@ const ProductForm: React.FC = () => {
             type="button"
             className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
             onClick={() => {
-              
+              window.location.href = "https://diancrochet-administrador.vercel.app/productos";
             }}
           >
             Volver
