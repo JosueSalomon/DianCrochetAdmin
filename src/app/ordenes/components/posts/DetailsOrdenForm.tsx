@@ -227,7 +227,7 @@ if (!detalleOrden || !ordenId) {
     <header className="flex justify-center border-b font-rubik font-semibold text-xl text-gray-900">Productos</header>
     <div className="max-h-96 overflow-y-auto mt-2 w-full">
     <table>
-        <thead className="text-left font-rubik text-lg text-gray-500">
+        <thead className="text-left font-rubik text-lg text-gray-500 sticky ">
             <tr>
                 <th className="border-b p-3">Nombre producto</th>
                 <th className="border-b p-3">Orden ID</th>
