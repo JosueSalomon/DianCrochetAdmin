@@ -270,10 +270,10 @@ if (!detalleOrden || !ordenId) {
                 const total = totalProductos + envio;
 
                 // Impuesto: 15% del total
-                const impuesto = total * 0.15;
+                const impuesto = totalProductos * 0.15;
 
                 // Subtotal: total - impuesto
-                const subtotal = total - impuesto;
+                const subtotal = totalProductos - impuesto;
 
                 return (
                     <>
