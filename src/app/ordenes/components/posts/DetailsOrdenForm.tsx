@@ -256,14 +256,14 @@ if (!detalleOrden || !ordenId) {
         <tr>
             <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">Subtotal:</td>
             <td className="text-gray-900 font-opensans font-semibold text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.subtotal, 0)).toFixed(2)}
+                L.{(detalleOrden.productos.reduce((acc, producto) => acc + (producto.total / 1.15), 0)).toFixed(2)}
             </td>
         </tr>
         <tr>
-            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
-            <td className="text-gray-900 font-opensans font-semibold text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.impuesto, 0)).toFixed(2)}
-            </td>
+                <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
+                <td className="text-gray-900 font-opensans font-semibold text-right">
+                    L.{(detalleOrden.productos.reduce((acc, producto) => acc + (producto.total * 0.15 / 1.15), 0)).toFixed(2)}
+                </td>
         </tr>
         <tr>
             <td className="text-gray-700 font-opensans font-semibold text-left">Descuento:</td>
@@ -276,11 +276,11 @@ if (!detalleOrden || !ordenId) {
             </td>
         </tr>
         <tr className="border-t">
-            <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
-            <td className="text-gray-900 text-lg font-black pt-3 text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.total, 0)).toFixed(2)}
-            </td>
-        </tr>
+                <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
+                <td className="text-gray-900 text-lg font-black pt-3 text-right">
+                    L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.total, 0)).toFixed(2)}
+                </td>
+         </tr>
     </tbody>
 </table>
 
