@@ -278,7 +278,7 @@ if (!detalleOrden || !ordenId) {
         <tr className="border-t">
                 <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
                 <td className="text-gray-900 text-lg font-black pt-3 text-right">
-                    L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.total, 0)).toFixed(2)}
+                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.precio_prod * producto.cantidad_productos, 0)).toFixed(2)}
                 </td>
          </tr>
     </tbody>
