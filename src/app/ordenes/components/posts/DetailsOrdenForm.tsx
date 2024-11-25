@@ -225,6 +225,7 @@ if (!detalleOrden || !ordenId) {
 
   <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950 mt-3">
     <header className="flex justify-center border-b font-rubik font-semibold text-xl text-gray-900">Productos</header>
+    <div className="max-h-96 overflow-y-auto mt-2">
     <table>
         <thead className="text-left font-rubik text-lg text-gray-500">
             <tr>
@@ -246,7 +247,7 @@ if (!detalleOrden || !ordenId) {
          </tbody>
 
     </table>
-    
+    </div>
     <div className="flex justify-end mt-2">
     <table className="table-auto">
     <tbody>
