@@ -243,7 +243,7 @@ if (!detalleOrden || !ordenId) {
                      <td className="border-b p-3">{detalleOrden.cliente.id_orden_paypal}</td>
                      <td className="border-b p-3">{producto.cantidad_productos}</td>
                      <td className="border-b p-3">L.{producto.precio_prod}</td>
-                     <td className="border-b p-3">L.{producto.subtotal}</td>
+                     <td className="border-b p-3">L.{producto.precio_prod * producto.cantidad_productos}</td>
                  </tr>
              ))}
          </tbody>
