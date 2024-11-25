@@ -233,6 +233,7 @@ if (!detalleOrden || !ordenId) {
                 <th className="border-b p-3">Orden ID</th>
                 <th className="border-b p-3">Cantidad</th>
                 <th className="border-b p-3">Total</th>
+                <th>HOLA CAMBIOS NUEVOS</th>
             </tr>
         </thead>
         <tbody className="font-opensansm text-lg">
