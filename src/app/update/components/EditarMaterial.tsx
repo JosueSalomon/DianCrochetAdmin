@@ -9,6 +9,7 @@ import { MaterialWithTallaUpdate, MaterialWithoutTallaUpdate } from "@interfaces
 import { updateMaterialWithSize, updateMaterialWithoutSize } from "../helper/UpdateMaterial";
 
 
+
 interface EditarMaterialProps {
   id: string; // Declara que el componente espera una prop `id` de tipo string
 }
@@ -23,7 +24,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
     const [isGallery, setIsGallery] = useState(false);
     const [mainImage, setMainImage] = useState<string | null>(productoInfo?.imagen_principal || null);
     // Inicializar el estado de los grosores con la data de productoInfo.grosores
-    const [sizes, setSizes] = useState<Record<string, { cantidad: number, precio: number }>>({});
+    const [, setSizes] = useState<Record<string, { cantidad: number, precio: number }>>({});
     //const [editing, setEditing] = useState(true);
     // Mapeo entre los nombres que vienen del backend y los que queremos mostrar
     const sizeMap: Record<string, string> = {
@@ -44,7 +45,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
     const [buttonColor, setButtonColor] = useState<string>("bg-gray-200");
     const [editableProduct, setEditableProduct] = useState(productoInfo);
     const [isEditing, setIsEditing] = useState(false);
-
+    const formattedKeywords = keywords && keywords.length > 0 ? keywords : null; // Asegurarse que sea null si está vacío
     useEffect(() => {
       const loadProductoInfo = async () => {
         const response = await fetchProductMaterial(id);
@@ -136,10 +137,24 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
       
       const handleKeywordRemove = (keyword: string) => {
         setKeywords((prevKeywords) => {
-          const updatedKeywords = prevKeywords?.filter((k) => k !== keyword) || null;
+          // Filtrar las palabras clave
+          const updatedKeywords = prevKeywords?.filter((k) => k !== keyword);
+      
+          // Actualizar editableProduct en base a las palabras clave actualizadas
+          setEditableProduct((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  keywords: updatedKeywords && updatedKeywords.length > 0 ? updatedKeywords : null,
+                }
+              : null
+          );
+      
+          // Retornar las palabras clave actualizadas, o null si el arreglo está vacío
           return updatedKeywords && updatedKeywords.length > 0 ? updatedKeywords : null;
         });
       };
+      
 
          // Actualizar el estado de sizes cuando productoInfo.grosores cambie
           useEffect(() => {
@@ -181,6 +196,8 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
       const handleCancel = () => {
         setIsDisabled(true); // Al hacer clic en "Editar", habilitar los inputs
         setButtonColor(buttonColor === "bg-gray-200" ? "bg-purple-400" : "bg-gray-200");
+        window.location.href = "https://diancrochet-administrador.vercel.app/productos";
+        
       };
       
       const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -227,15 +244,16 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
             categoryId: 4,
             mainImage: mainImage || "",
             galleryImages: galleryImages.length > 0 ? galleryImages : null,
-            keywords: keywords,
+            keywords: formattedKeywords,
             marca:editableProduct.nombre_marca,
           };
           console.log("Objeto que se envía para Producto con medidas:", productData);
           const success = await updateMaterialWithSize(editableProduct.id_producto, productData);
           
-          window.location.reload();
+          
           if (success) {
             console.log("Producto con medidas actualizado correctamente.");
+            window.location.reload();
           } else {
             console.error("Error actualizando producto con medidas.");
           }
@@ -249,15 +267,16 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
             stock: editableProduct.cantidad_disp,
             mainImage: mainImage || "",
             galleryImages: galleryImages.length > 0 ? galleryImages : null,
-            keywords: keywords,
+            keywords: formattedKeywords,
             marca:editableProduct.nombre_marca,
           };
           console.log("Objeto que se envía para Producto sin medidas:", productData);
     
           const success = await updateMaterialWithoutSize(editableProduct.id_producto, productData);
-          window.location.reload();
+          
           if (success) {
             console.log("Producto sin medidas actualizado correctamente.");
+            window.location.reload();
           } else {
             console.error("Error actualizando producto sin medidas.");
           }
@@ -365,7 +384,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
                   <div className="mt-4 space-y-4">
                         {allSizes.map((size) => {
                           // Comprobamos si el nombre del tamaño existe en los grosores del backend
-                          const backendSize = Object.keys(sizes).find(key => sizeMap[key] === size);
+                          const backendSize = Object.keys(sizeMap).find(key => sizeMap[key] === size);
 
                           return (
                             <div key={size} className="grid grid-cols-2 gap-4">
@@ -591,7 +610,7 @@ export default function EditarMaterial ({ id }: EditarMaterialProps) {
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-purple-400"
                 onClick={handleCancel}
               >
-                Cancelar
+                Volver
               </button>
   
           </div>
