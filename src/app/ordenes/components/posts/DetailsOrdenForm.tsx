@@ -233,7 +233,6 @@ if (!detalleOrden || !ordenId) {
                 <th className="border-b p-3">Orden ID</th>
                 <th className="border-b p-3">Cantidad</th>
                 <th className="border-b p-3">Total</th>
-                <th>HOLA CAMBIOS NUEVOS</th>
             </tr>
         </thead>
         <tbody className="font-opensansm text-lg">
@@ -259,7 +258,7 @@ if (!detalleOrden || !ordenId) {
             </td>
         </tr>
         <tr>
-            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (20%):</td>
+            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
             <td className="text-gray-900 font-opensans font-semibold text-right">
                 L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.impuesto, 0)).toFixed(2)}
             </td>
