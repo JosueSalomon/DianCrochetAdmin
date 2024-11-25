@@ -12,6 +12,7 @@ interface Orden {
     nombre: string;
     estado_fact: string;
     color: string;
+    total: number;
   }
 export default function Dashboard() {
    // Estado para almacenar las órdenes
@@ -164,7 +165,7 @@ export default function Dashboard() {
                   />
                   {orden.estado_fact}
                 </td>
-                <td className="p-4">L.200</td>
+                <td className="p-4">L.{orden.total}</td>
               </tr>
             ))
           ) : (
