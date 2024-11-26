@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import { IoPrintOutline } from "react-icons/io5";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaCcPaypal } from "react-icons/fa";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 // Definición de la interfaz para los datos de la orden
 interface DetalleOrdenCliente {
@@ -163,6 +165,20 @@ useEffect(() => {
     }
 };
 
+const handlePrint = async () => {
+    const element = document.getElementById("Primary");
+    if (!element) return;
+
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`Orden-${ordenId}.pdf`);
+};
+
 if (!detalleOrden || !ordenId) {
     return <div>Cargando...</div>;
 }
@@ -194,7 +210,7 @@ if (!detalleOrden || !ordenId) {
                             </option>
                         ))}
                     </select>
-                        <button className="border-splid border-2 py-3 px-10 ml-5 text-xl border-none bg-gray-100 rounded-md"><IoPrintOutline /></button>
+                        <button className="border-splid border-2 py-3 px-10 ml-5 text-xl border-none bg-gray-100 rounded-md" onClick={handlePrint}><IoPrintOutline /></button>
                     </div>
                 </div>
             </header>
