@@ -143,6 +143,7 @@ export default function Dashboard() {
           value={idEstado ?? ""}
           onChange={(e) => setIdEstado(e.target.value ? parseInt(e.target.value) : null)}
         >
+          <option value="">Todos</option>
           {estados.map((estado) => (
             <option key={estado.ID_ESTADO_FACT} value={estado.ID_ESTADO_FACT}>
               {estado.ESTADO_FACT}
@@ -153,11 +154,12 @@ export default function Dashboard() {
 
       <div className="font-rubik ">
        <label>Ordenar de forma: </label>
-        <select
-        className="border-none bg-gray-100 rounded-md"
-          value={direccionOrdenamiento}
-          onChange={(e) => setDireccionOrdenamiento(e.target.value as "asc" | "desc" | "")}
-        >
+       <select
+    className="border-none bg-gray-100 rounded-md"
+    value={direccionOrdenamiento}
+    onChange={(e) => setDireccionOrdenamiento(e.target.value as "asc" | "desc" | "")}
+    disabled={idEstado === null} // Deshabilitar si idEstado es null (Todos)
+  >
           <option value="">Sin orden</option>
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
