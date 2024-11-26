@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useEffect, useState } from "react";
-import { IoCalendarOutline } from "react-icons/io5";
+// import { IoCalendarOutline } from "react-icons/io5";
 import { GrStatusGoodSmall } from "react-icons/gr";
 
 // Interfaz para las órdenes
@@ -23,8 +23,8 @@ interface EstadoFactura {
 export default function Dashboard() {
   // Estado para almacenar las órdenes
   const [ordenes, setOrdenes] = useState<Orden[]>([]);
-  const [fechaInicio, setFechaInicio] = useState<string>("");
-  const [fechaFin, setFechaFin] = useState<string>("");
+  // const [fechaInicio, setFechaInicio] = useState<string>("");
+  // const [fechaFin, setFechaFin] = useState<string>("");
   const [estados, setEstados] = useState<EstadoFactura[]>([]);
   const [idEstado, setIdEstado] = useState<number | null>(null); // Estado seleccionado por el usuario
   const [direccionOrdenamiento, setDireccionOrdenamiento] = useState<"asc" | "desc" | "">("");
@@ -92,20 +92,20 @@ export default function Dashboard() {
   };
   
 
-  const actualizarRangoFechas = (nuevaFechaInicio: string, nuevaFechaFin: string) => {
-    setFechaInicio(nuevaFechaInicio);
-    setFechaFin(nuevaFechaFin);
-  };
+  // const actualizarRangoFechas = (nuevaFechaInicio: string, nuevaFechaFin: string) => {
+  //   setFechaInicio(nuevaFechaInicio);
+  //   setFechaFin(nuevaFechaFin);
+  // };
   
-  // Simulación: Actualizar rango de fechas
-  useEffect(() => {
-    // Simula un rango de fechas inicial al cargar el componente
-    const rangoInicial = {
-      inicio: "2024-11-01",
-      fin: "2024-11-29",
-    };
-    actualizarRangoFechas(rangoInicial.inicio, rangoInicial.fin);
-  }, []);
+  // // Simulación: Actualizar rango de fechas
+  // useEffect(() => {
+  //   // Simula un rango de fechas inicial al cargar el componente
+  //   const rangoInicial = {
+  //     inicio: "2024-11-01",
+  //     fin: "2024-11-29",
+  //   };
+  //   actualizarRangoFechas(rangoInicial.inicio, rangoInicial.fin);
+  // }, []);
   
   
 
@@ -124,10 +124,10 @@ export default function Dashboard() {
     <h1 className="font-rubik text-3xl font-semibold mb-3">Dashboard</h1>
     <div className="text-gray-700 flex justify-between items-center">
       <h1 className="text-lg">Home &gt; Dashboard</h1>
-      <h5 className="flex items-center text-lg">
+      {/* <h5 className="flex items-center text-lg">
         <IoCalendarOutline className="mr-2 text-xl" />{fechaInicio} -{" "}
         {fechaFin}
-      </h5>
+      </h5> */}
     </div>
   </div>
 
