@@ -253,61 +253,42 @@ if (!detalleOrden || !ordenId) {
     <div className="flex justify-end mt-2">
     <table className="table-auto">
         <tbody>
-            {(() => {
-                // Total de todos los productos
-                const totalProductos = detalleOrden.productos.reduce(
-                    (acc, producto) => acc + producto.precio_prod * producto.cantidad_productos,
-                    0
-                );
-
-                // Total de envío
-                const envio = detalleOrden.productos.reduce(
-                    (acc, producto) => acc + producto.precio_envio,
-                    0
-                );
-
-                // Total de la orden
-                const total = totalProductos + envio;
-
-                // Impuesto: 15% del total
-                const impuesto = totalProductos * 0.15;
-
-                // Subtotal: total - impuesto
-                const subtotal = totalProductos - impuesto;
-
-                return (
-                    <>
-                        <tr>
+                {detalleOrden.productos.map((producto, index) => (
+                        <tr key={index}>
                             <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">Subtotal:</td>
                             <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{subtotal.toFixed(2)}
+                                L.{producto.subtotal}
                             </td>
                         </tr>
-                        <tr>
+                 ))}
+                {detalleOrden.productos.map((producto, index) => (
+                        <tr key={index}>
                             <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
                             <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{impuesto.toFixed(2)}
+                                L.{producto.impuesto.toFixed(2)}
                             </td>
                         </tr>
+                         ))}
                         <tr>
                             <td className="text-gray-700 font-opensans font-semibold text-left">Descuento:</td>
                             <td className="text-gray-900 font-opensans font-semibold text-right">L.0.00</td>
                         </tr>
-                        <tr>
+                        {detalleOrden.productos.map((producto, index) => (
+                        <tr key={index}>
                             <td className="text-gray-700 font-opensans font-semibold text-left">Envio:</td>
                             <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{envio.toFixed(2)}
+                                L.{producto.precio_envio.toFixed(2)}
                             </td>
                         </tr>
-                        <tr className="border-t">
+                        ))}
+                        {detalleOrden.productos.map((producto, index) => (
+                        <tr className="border-t" key={index}>
                             <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
                             <td className="text-gray-900 text-lg font-black pt-3 text-right">
-                                L.{total.toFixed(2)}
+                                L.{producto.total.toFixed(2)}
                             </td>
                         </tr>
-                    </>
-                );
-            })()}
+                        ))}
         </tbody>
     </table>
 </div>
