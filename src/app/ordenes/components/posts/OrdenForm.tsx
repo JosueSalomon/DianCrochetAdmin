@@ -153,7 +153,7 @@ export default function Dashboard() {
       </div>
 
       <div className="font-rubik ">
-       <label>Dirección de Ordenamiento: </label>
+       <label>Ordenar de forma: </label>
         <select
         className="border-none bg-gray-100 rounded-md"
           value={direccionOrdenamiento}
