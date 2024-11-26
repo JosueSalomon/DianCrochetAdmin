@@ -180,7 +180,7 @@ export default function Dashboard() {
                 onClick={() => detailsClick(orden.id_factura)}
               >
                 <td className="p-4">#{orden.codigo_fact}</td>
-                <td className="p-4">{new Date(orden.fecha_fact).toLocaleDateString("es-ES", {year: "numeric",month: "2-digit",day: "2-digit", })}</td>
+                <td className="p-4">{new Date(orden.fecha_fact).toLocaleDateString("es-ES", {day: "2-digit",month: "2-digit",year: "numeric" })}</td>
                 <td className="p-4">{orden.nombre}</td>
                 <td className="p-4 flex items-center">
                   <GrStatusGoodSmall
