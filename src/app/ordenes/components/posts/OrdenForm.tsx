@@ -1,40 +1,50 @@
-"use cliente";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import React, { useEffect, useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import { GrStatusGoodSmall } from "react-icons/gr";
 
-
 // Interfaz para las órdenes
 interface Orden {
-    id_factura: number;
-    codigo_fact: string;
-    fecha_fact: string;
-    nombre: string;
-    estado_fact: string;
-    color: string;
-    total: number;
-  }
+  id_factura: number;
+  codigo_fact: string;
+  fecha_fact: string;
+  nombre: string;
+  estado_fact: string;
+  color: string;
+  total: number;
+}
 
-  interface EstadoFactura {
-    ID_ESTADO_FACT: number;
-    ESTADO_FACT: string;
+interface EstadoFactura {
+  ID_ESTADO_FACT: number;
+  ESTADO_FACT: string;
 }
 
 export default function Dashboard() {
-   // Estado para almacenar las órdenes
-   const [ordenes, setOrdenes] = useState<Orden[]>([]);
-   const [fechaInicio, setFechaInicio] = useState<string>("");
-   const [fechaFin, setFechaFin] = useState<string>("");
-   const [ordenamiento, setOrdenamiento] = useState<"asc" | "desc" | "">(""); 
-   const [estados, setEstados] = useState<EstadoFactura[]>([]);
-   const detailsClick = (id: number) => {
-    localStorage.setItem("ordenSeleccionada", id.toString()); // Guarda el ID de la orden
-    window.location.href = "/ordenes/details-orden"; // Redirige a la vista de detalles
+  // Estado para almacenar las órdenes
+  const [ordenes, setOrdenes] = useState<Orden[]>([]);
+  const [fechaInicio, setFechaInicio] = useState<string>("");
+  const [fechaFin, setFechaFin] = useState<string>("");
+  const [estados, setEstados] = useState<EstadoFactura[]>([]);
+  const [idEstado, setIdEstado] = useState<number | null>(null); // Estado seleccionado por el usuario
+  const [direccionOrdenamiento, setDireccionOrdenamiento] = useState<"asc" | "desc" | "">("");
+
+  const detailsClick = (id: number) => {
+    localStorage.setItem("ordenSeleccionada", id.toString());
+    window.location.href = "/ordenes/details-orden";
   };
- 
-   // Función para obtener las órdenes
+
+  // Función para obtener las órdenes
   const fetchOrdenes = async () => {
     try {
+      const body: Record<string, any> = {
+        columna_ordenamiento: "FECHA_FACT", // Ordenamiento siempre por fecha
+      };
+
+      // Agregar valores según estado o dirección de ordenamiento seleccionados
+      if (idEstado) body.idEstado = idEstado;
+      if (direccionOrdenamiento) body.direccion_ordenamiento = direccionOrdenamiento;
+
       const response = await fetch(
         "https://deploybackenddiancrochet.onrender.com/admin/ordenes",
         {
@@ -42,87 +52,62 @@ export default function Dashboard() {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(body),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+        throw new Error("Error al obtener las órdenes");
       }
 
       const data = await response.json();
       setOrdenes(data.ordenes);
-      if (data.ordenes.length > 0) {
-        obtenerRangoDeFechas(data.ordenes);
-      }
     } catch (error) {
-      console.error("Error al obtener las órdenes:", error);
+      console.error("Error:", error);
     }
   };
 
-  const parseFecha = (fecha: string): Date => {
-    const partes = fecha.split(/[-/]/);
-  
-    if (partes[0].length === 4) {
-      // Formato YYYY-MM-DD
-      return new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-    } else {
-      // Asumimos formato DD/MM/YYYY
-      return new Date(Number(partes[2]), Number(partes[1]) - 1, Number(partes[0]));
-    }
-  };
-  
-  // Obtener los estados
-useEffect(() => {
+  // Obtener estados de las facturas
   const fetchEstados = async () => {
-      try {
-          const response = await fetch("https://deploybackenddiancrochet.onrender.com/admin/factura/estados");
-          if (!response.ok) throw new Error("Error al obtener los estados");
-          const data = await response.json();
-          setEstados(data.Estados || []);
-      } catch (error) {
-          console.error("Error al obtener los estados:", error);
+    try {
+      const response = await fetch(
+        "https://deploybackenddiancrochet.onrender.com/admin/estados"
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los estados");
       }
+
+      const data = await response.json();
+      setEstados(data.estados);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-  fetchEstados();
-}, []);
-
-  const obtenerRangoDeFechas = (ordenes: Orden[]) => {
-    const fechas = ordenes.map((orden) => parseFecha(orden.fecha_fact).getTime());
-  
-    if (fechas.length === 0) return;
-  
-    const fechaMin = new Date(Math.min(...fechas));
-    const fechaMax = new Date(Math.max(...fechas));
-  
-    const opciones = { year: "numeric", month: "short", day: "numeric" } as const;
-    setFechaInicio(fechaMin.toLocaleDateString("en-US", opciones));
-    setFechaFin(fechaMax.toLocaleDateString("en-US", opciones));
-  };
-
-  // Función para ordenar las órdenes por fecha
-  const ordenarPorFecha = (tipo: "asc" | "desc") => {
-    const ordenesOrdenadas = [...ordenes].sort((a, b) => {
-      const fechaA = new Date(a.fecha_fact).getTime();
-      const fechaB = new Date(b.fecha_fact).getTime();
-      return tipo === "asc" ? fechaA - fechaB : fechaB - fechaA;
-    });
-    setOrdenes(ordenesOrdenadas);
-  };
-
-  // Manejar el cambio en el select
-  const manejarOrdenamiento = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const valor = e.target.value as "asc" | "desc";
-    setOrdenamiento(valor);
-    ordenarPorFecha(valor);
+  const actualizarRangoFechas = (nuevaFechaInicio: string, nuevaFechaFin: string) => {
+    setFechaInicio(nuevaFechaInicio);
+    setFechaFin(nuevaFechaFin);
   };
   
- 
-
-   // Obtener órdenes al cargar el componente
-   useEffect(() => {
-    fetchOrdenes();
+  // Simulación: Actualizar rango de fechas
+  useEffect(() => {
+    // Simula un rango de fechas inicial al cargar el componente
+    const rangoInicial = {
+      inicio: "2024-11-01",
+      fin: "2024-11-30",
+    };
+    actualizarRangoFechas(rangoInicial.inicio, rangoInicial.fin);
   }, []);
+  
+
+  // Ejecutar al cargar la página
+  useEffect(() => {
+    fetchOrdenes();
+    fetchEstados();
+  }, [idEstado, direccionOrdenamiento]); // Actualizar cuando cambie estado o dirección
+
+
     return(
         <>
         <div id="Primary" className="flex flex-col justify-start items-start w-full h-full overflow-auto p-5">
@@ -132,7 +117,7 @@ useEffect(() => {
     <div className="text-gray-700 flex justify-between items-center">
       <h1 className="text-lg">Home &gt; Dashboard</h1>
       <h5 className="flex items-center text-lg">
-        <IoCalendarOutline className="mr-2 text-xl" /> {fechaInicio} -{" "}
+        <IoCalendarOutline className="mr-2 text-xl" />{fechaInicio} -{" "}
         {fechaFin}
       </h5>
     </div>
@@ -144,26 +129,29 @@ useEffect(() => {
     <div className="flex justify-between items-center mb-4">
       <h1 className="font-rubik font-black text-lg">Ordenes</h1>
       <div className="font-rubik ">
-        Ordenar por fecha:
+      <label>Estado: </label>
         <select
-          className="border-none text-sm w-auto rounded-md"
-          value={ordenamiento}
-          onChange={manejarOrdenamiento}
+          value={idEstado ?? ""}
+          onChange={(e) => setIdEstado(e.target.value ? parseInt(e.target.value) : null)}
         >
-          <option value="" disabled className="text-gray-600">Seleccionar</option>
+          <option value="">Todos</option>
+          {estados.map((estado) => (
+            <option key={estado.ID_ESTADO_FACT} value={estado.ID_ESTADO_FACT}>
+              {estado.ESTADO_FACT}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="font-rubik ">
+       <label>Dirección de Ordenamiento: </label>
+        <select
+          value={direccionOrdenamiento}
+          onChange={(e) => setDireccionOrdenamiento(e.target.value as "asc" | "desc" | "")}
+        >
+          <option value="">Sin orden</option>
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
-        </select>
-
-      </div>
-      <div className="font-rubik ">
-        Ordenar por estado:
-        <select className="border-none text-sm w-auto rounded-md">
-         {estados.map((estado) => (
-                            <option key={estado.ID_ESTADO_FACT} value={estado.ESTADO_FACT}>
-                                {estado.ESTADO_FACT}
-                            </option>
-                        ))}
         </select>
 
       </div>
