@@ -171,7 +171,7 @@ const handlePrint = async () => {
 
     if (!element1 || !element2) return;
 
-    // Generar el canvas para ambos elementos
+    // Generar los canvas para ambos elementos
     const canvas1 = await html2canvas(element1);
     const canvas2 = await html2canvas(element2);
 
@@ -181,22 +181,34 @@ const handlePrint = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
 
-    // Calcular las alturas de las imágenes en función de sus anchos
+    // Calcular la altura de las imágenes en función de sus anchos
     const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
     const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
 
-    // Agregar la primera imagen en el PDF
-    pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
+    // Determinar la altura total para ambas imágenes
+    const totalHeight = pdfHeight1 + pdfHeight2;
 
-    // Agregar una nueva página antes de la segunda imagen
-    pdf.addPage();
+    // Si la altura total excede el tamaño de la página A4, ajusta las imágenes para que encajen en una sola página
+    if (totalHeight > pdf.internal.pageSize.getHeight()) {
+        const scaleFactor = pdf.internal.pageSize.getHeight() / totalHeight;
+        const scaledHeight1 = pdfHeight1 * scaleFactor;
+        const scaledHeight2 = pdfHeight2 * scaleFactor;
 
-    // Agregar la segunda imagen en la nueva página
-    pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight2);
+        // Agregar la primera imagen al PDF
+        pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, scaledHeight1);
+
+        // Agregar la segunda imagen debajo de la primera
+        pdf.addImage(imgData2, "PNG", 0, scaledHeight1, pdfWidth, scaledHeight2);
+    } else {
+        // Si las imágenes caben en una sola página, agregarlas sin escala
+        pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
+        pdf.addImage(imgData2, "PNG", 0, pdfHeight1, pdfWidth, pdfHeight2);
+    }
 
     // Guardar el PDF con el nombre de la orden
     pdf.save(`Orden-${ordenId}.pdf`);
 };
+
 
 if (!detalleOrden || !ordenId) {
     return <div>Cargando...</div>;
