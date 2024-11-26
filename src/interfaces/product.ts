@@ -10,7 +10,7 @@ export interface ProductWithSize {
     galleryImages: string[] | null;
     sizeQuantities: Record<string, number | null>;
     sizePrices: Record<string, number | null>;
-    keywords: string[];
+    keywords: string[] | null;
   }
   
   export interface ProductWithoutSize {
@@ -21,7 +21,7 @@ export interface ProductWithSize {
     categories: string[];
     mainImage: string;
     galleryImages: string[] | null;
-    keywords: string[];
+    keywords: string[] | null;
   }
 
   export interface Product {

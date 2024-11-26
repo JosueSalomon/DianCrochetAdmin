@@ -4,7 +4,7 @@ import { CiGrid42 } from "react-icons/ci";
 import { TiArchive } from "react-icons/ti";
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
-export default function SideBar() {
+export default function Sidebar() {
 // Redireccionar con router
 const router = useRouter();  // Usamos useRouter para navegar
 

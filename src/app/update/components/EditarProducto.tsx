@@ -9,6 +9,8 @@ import { ProductWithSizeUpdate, ProductWithoutSizeUpdate } from "@interfaces/pro
 import { fetchProductMaterial } from "../helper/UpdateMaterial";
 import { updateProductWithoutSize, updateProductWithSize } from "../helper/UpdateProduct";
 
+
+
 interface EditarMaterialProps {
   id: string; // Declara que el componente espera una prop `id` de tipo string
 }
@@ -33,6 +35,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
   const [editableProduct, setEditableProduct] = useState(productoInfo);
   const [productType, setProductType] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
+  const formattedKeywords = keywords && keywords.length > 0 ? keywords : null; // Asegurarse que sea null si está vacío
     useEffect(() => {   // ID de prueba
       const loadProductoInfo = async () => {
         const response = await fetchProductMaterial(id);
@@ -129,16 +132,20 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
     
       const handleKeywordRemove = (keyword: string) => {
         setKeywords((prevKeywords) => {
-          const updatedKeywords = prevKeywords?.filter((k) => k !== keyword) || null;
+          // Filtrar las palabras clave
+          const updatedKeywords = prevKeywords?.filter((k) => k !== keyword);
+      
+          // Actualizar editableProduct en base a las palabras clave actualizadas
           setEditableProduct((prev) =>
             prev
               ? {
                   ...prev,
-                  keywords: updatedKeywords,
+                  keywords: updatedKeywords && updatedKeywords.length > 0 ? updatedKeywords : null,
                 }
               : null
           );
       
+          // Retornar las palabras clave actualizadas, o null si el arreglo está vacío
           return updatedKeywords && updatedKeywords.length > 0 ? updatedKeywords : null;
         });
       };
@@ -204,6 +211,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
         const handleCancel = () => {
           setIsDisabled(true); // Al hacer clic en "Editar", habilitar los inputs
           setButtonColor(buttonColor === "bg-gray-200" ? "bg-purple-400" : "bg-gray-200");
+          window.location.href = "https://diancrochet-administrador.vercel.app/productos";
         };
           
         useEffect(() => {
@@ -256,7 +264,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
               categories: selectedCategoryIds,
               mainImage: mainImage || "",
               galleryImages: galleryImages.length > 0 ? galleryImages : null,
-              keywords: keywords,
+              keywords: formattedKeywords,
             };
             console.log("Objeto que se envía para Producto con medidas:", productData);
             const success = await updateProductWithSize(editableProduct.id_producto, productData);
@@ -277,7 +285,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
               stock: editableProduct.cantidad_disp,
               mainImage: mainImage || "",
               galleryImages: galleryImages.length > 0 ? galleryImages : null,
-              keywords: keywords,
+              keywords: formattedKeywords,
             };
             console.log("Objeto que se envía para Producto sin medidas:", productData);
       
@@ -634,7 +642,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
               onClick={handleCancel}
             
             >
-              Cancelar
+              Volver
             </button>
             
             

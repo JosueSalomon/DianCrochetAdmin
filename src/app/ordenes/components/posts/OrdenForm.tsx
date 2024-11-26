@@ -12,13 +12,21 @@ interface Orden {
     nombre: string;
     estado_fact: string;
     color: string;
+    total: number;
   }
+
+  interface EstadoFactura {
+    ID_ESTADO_FACT: number;
+    ESTADO_FACT: string;
+}
+
 export default function Dashboard() {
    // Estado para almacenar las órdenes
    const [ordenes, setOrdenes] = useState<Orden[]>([]);
    const [fechaInicio, setFechaInicio] = useState<string>("");
    const [fechaFin, setFechaFin] = useState<string>("");
    const [ordenamiento, setOrdenamiento] = useState<"asc" | "desc" | "">(""); 
+   const [estados, setEstados] = useState<EstadoFactura[]>([]);
    const detailsClick = (id: number) => {
     localStorage.setItem("ordenSeleccionada", id.toString()); // Guarda el ID de la orden
     window.location.href = "/ordenes/details-orden"; // Redirige a la vista de detalles
@@ -63,6 +71,22 @@ export default function Dashboard() {
     }
   };
   
+  // Obtener los estados
+useEffect(() => {
+  const fetchEstados = async () => {
+      try {
+          const response = await fetch("https://deploybackenddiancrochet.onrender.com/admin/factura/estados");
+          if (!response.ok) throw new Error("Error al obtener los estados");
+          const data = await response.json();
+          setEstados(data.Estados || []);
+      } catch (error) {
+          console.error("Error al obtener los estados:", error);
+      }
+  };
+
+  fetchEstados();
+}, []);
+
   const obtenerRangoDeFechas = (ordenes: Orden[]) => {
     const fechas = ordenes.map((orden) => parseFecha(orden.fecha_fact).getTime());
   
@@ -98,9 +122,6 @@ export default function Dashboard() {
    // Obtener órdenes al cargar el componente
    useEffect(() => {
     fetchOrdenes();
-
-    console.log("Órdenes obtenidas:", ordenes);
-
   }, []);
     return(
         <>
@@ -125,14 +146,26 @@ export default function Dashboard() {
       <div className="font-rubik ">
         Ordenar por fecha:
         <select
-              className="border-none text-sm w-auto rounded-md"
-              value={ordenamiento}
-              onChange={manejarOrdenamiento}
-            >
-          <option value="" disabled className="text-gray-600">seleccionar</option>
-          <option value="fecha">Ascendente</option>
-          <option value="cliente">Descendente</option>
+          className="border-none text-sm w-auto rounded-md"
+          value={ordenamiento}
+          onChange={manejarOrdenamiento}
+        >
+          <option value="" disabled className="text-gray-600">Seleccionar</option>
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
         </select>
+
+      </div>
+      <div className="font-rubik ">
+        Ordenar por estado:
+        <select className="border-none text-sm w-auto rounded-md">
+         {estados.map((estado) => (
+                            <option key={estado.ID_ESTADO_FACT} value={estado.ESTADO_FACT}>
+                                {estado.ESTADO_FACT}
+                            </option>
+                        ))}
+        </select>
+
       </div>
     </div>
 
@@ -166,7 +199,7 @@ export default function Dashboard() {
                   />
                   {orden.estado_fact}
                 </td>
-                <td className="p-4">L.200</td>
+                <td className="p-4">L.{orden.total}</td>
               </tr>
             ))
           ) : (

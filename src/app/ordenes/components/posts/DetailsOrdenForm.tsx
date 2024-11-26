@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import { IoPrintOutline } from "react-icons/io5";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaCcPaypal } from "react-icons/fa";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 // Definición de la interfaz para los datos de la orden
 interface DetalleOrdenCliente {
@@ -163,13 +165,58 @@ useEffect(() => {
     }
 };
 
+const handlePrint = async () => {
+    const element1 = document.getElementById("Primary");
+    const element2 = document.getElementById("Second");
+
+    if (!element1 || !element2) return;
+
+    // Generar los canvas para ambos elementos
+    const canvas1 = await html2canvas(element1);
+    const canvas2 = await html2canvas(element2);
+
+    const imgData1 = canvas1.toDataURL("image/png");
+    const imgData2 = canvas2.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+
+    // Calcular la altura de las imágenes en función de sus anchos
+    const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
+    const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
+
+    // Determinar la altura total para ambas imágenes
+    const totalHeight = pdfHeight1 + pdfHeight2;
+
+    // Si la altura total excede el tamaño de la página A4, ajusta las imágenes para que encajen en una sola página
+    if (totalHeight > pdf.internal.pageSize.getHeight()) {
+        const scaleFactor = pdf.internal.pageSize.getHeight() / totalHeight;
+        const scaledHeight1 = pdfHeight1 * scaleFactor;
+        const scaledHeight2 = pdfHeight2 * scaleFactor;
+
+        // Agregar la primera imagen al PDF
+        pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, scaledHeight1);
+
+        // Agregar la segunda imagen debajo de la primera
+        pdf.addImage(imgData2, "PNG", 0, scaledHeight1, pdfWidth, scaledHeight2);
+    } else {
+        // Si las imágenes caben en una sola página, agregarlas sin escala
+        pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
+        pdf.addImage(imgData2, "PNG", 0, pdfHeight1, pdfWidth, pdfHeight2);
+    }
+
+    // Guardar el PDF con el nombre de la orden
+    pdf.save(`Orden-${ordenId}.pdf`);
+};
+
+
 if (!detalleOrden || !ordenId) {
     return <div>Cargando...</div>;
 }
 
     
     return (
-        <div id="Primary" className="flex flex-col justify-start items-start w-full h-full  p-5">
+        <div className="flex flex-col justify-start items-start w-full h-full  p-5">
   {/* Encabezado */}
   <div id="header" className="text-gray-950 mb-5 w-full">
     <h1 className="font-rubik text-3xl font-semibold mb-3">Detalles orden</h1>
@@ -179,7 +226,7 @@ if (!detalleOrden || !ordenId) {
   </div>
 
   {/* Contenedor de órdenes */}
-  <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950">
+  <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950" id="Primary">
         <div>
             <header>
                 <h1 className="flex items-center font-rubik font-semibold text-2xl text-gray-800">Orden ID: #{ordenId} <div className="ml-2 border-solid border-2 p-2 rounded-md font-opensans font-semibold text-white text-sm" style={{ backgroundColor: detalleOrden.cliente.color }}>{detalleOrden.cliente.estado_fact}</div></h1>
@@ -194,7 +241,7 @@ if (!detalleOrden || !ordenId) {
                             </option>
                         ))}
                     </select>
-                        <button className="border-splid border-2 py-3 px-10 ml-5 text-xl border-none bg-gray-100 rounded-md"><IoPrintOutline /></button>
+                        <button className="border-splid border-2 py-3 px-10 ml-5 text-xl border-none bg-gray-100 rounded-md" onClick={handlePrint}><IoPrintOutline /></button>
                     </div>
                 </div>
             </header>
@@ -223,14 +270,16 @@ if (!detalleOrden || !ordenId) {
         </div>
   </div>
 
-  <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950 mt-3">
+  <div className="w-full bg-white rounded-md p-5 flex flex-col h-auto text-gray-950 mt-3" id="Second">
     <header className="flex justify-center border-b font-rubik font-semibold text-xl text-gray-900">Productos</header>
-    <table>
-        <thead className="text-left font-rubik text-lg text-gray-500">
+    <div className="max-h-96 overflow-y-auto mt-2 w-full">
+    <table className="w-full">
+        <thead className="text-left font-rubik text-lg text-gray-500 sticky ">
             <tr>
                 <th className="border-b p-3">Nombre producto</th>
                 <th className="border-b p-3">Orden ID</th>
                 <th className="border-b p-3">Cantidad</th>
+                <th className="border-b p-3">Precio unitario</th>
                 <th className="border-b p-3">Total</th>
             </tr>
         </thead>
@@ -240,26 +289,34 @@ if (!detalleOrden || !ordenId) {
                      <td className="border-b p-3">{producto.nombre_prod}</td>
                      <td className="border-b p-3">{detalleOrden.cliente.id_orden_paypal}</td>
                      <td className="border-b p-3">{producto.cantidad_productos}</td>
-                     <td className="border-b p-3">L.{producto.total_productos}</td>
+                     <td className="border-b p-3">L.{producto.precio_prod/producto.cantidad_productos}</td>
+                     <td className="border-b p-3">L.{producto.precio_prod}</td>
                  </tr>
              ))}
          </tbody>
 
     </table>
-    
+    </div>
     <div className="flex justify-end mt-2">
     <table className="table-auto">
     <tbody>
+        {/* Solo iterar sobre los productos para mostrar los detalles de cada uno */}
+        {detalleOrden.productos.map((producto, index) => (
+            <tr key={index}>
+            </tr>
+        ))}
+
+        {/* Mostrar los valores únicos fuera del ciclo map */}
         <tr>
-            <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">Subtotal:</td>
+            <td className="text-gray-700 font-opensans font-semibold text-left">Subtotal:</td>
             <td className="text-gray-900 font-opensans font-semibold text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.subtotal, 0)).toFixed(2)}
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.subtotal, 0).toFixed(2)}
             </td>
         </tr>
         <tr>
-            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (20%):</td>
+            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
             <td className="text-gray-900 font-opensans font-semibold text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.impuesto, 0)).toFixed(2)}
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.impuesto, 0).toFixed(2)}
             </td>
         </tr>
         <tr>
@@ -269,22 +326,23 @@ if (!detalleOrden || !ordenId) {
         <tr>
             <td className="text-gray-700 font-opensans font-semibold text-left">Envio:</td>
             <td className="text-gray-900 font-opensans font-semibold text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.precio_envio, 0)).toFixed(2)}
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.precio_envio, 0).toFixed(2)}
             </td>
         </tr>
         <tr className="border-t">
             <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
             <td className="text-gray-900 text-lg font-black pt-3 text-right">
-                L.{(detalleOrden.productos.reduce((acc, producto) => acc + producto.total, 0)).toFixed(2)}
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.total, 0).toFixed(2)}
             </td>
         </tr>
     </tbody>
 </table>
-
 </div>
+
 
 
   </div>
 </div>
     );
 }
+
