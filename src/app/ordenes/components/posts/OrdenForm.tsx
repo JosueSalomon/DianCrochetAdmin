@@ -71,19 +71,21 @@ export default function Dashboard() {
   const fetchEstados = async () => {
     try {
       const response = await fetch(
-        "https://deploybackenddiancrochet.onrender.com/admin/estados"
+        "https://deploybackenddiancrochet.onrender.com/admin/factura/estados"
       );
-
+  
       if (!response.ok) {
         throw new Error("Error al obtener los estados");
       }
-
+  
       const data = await response.json();
-      setEstados(data.estados);
+      console.log(data); // Verifica que los datos recibidos son correctos
+      setEstados(data.Estados); // Cambié "estados" a "Estados"
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
 
   const actualizarRangoFechas = (nuevaFechaInicio: string, nuevaFechaFin: string) => {
     setFechaInicio(nuevaFechaInicio);
@@ -181,7 +183,7 @@ export default function Dashboard() {
                 onClick={() => detailsClick(orden.id_factura)}
               >
                 <td className="p-4">#{orden.codigo_fact}</td>
-                <td className="p-4">{new Date(orden.fecha_fact).toLocaleDateString('es-ES')}</td>
+                <td className="p-4">{orden.fecha_fact}</td>
                 <td className="p-4">{orden.nombre}</td>
                 <td className="p-4 flex items-center">
                   <GrStatusGoodSmall
