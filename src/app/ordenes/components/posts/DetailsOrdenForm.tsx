@@ -303,12 +303,6 @@ if (!detalleOrden || !ordenId) {
         {/* Solo iterar sobre los productos para mostrar los detalles de cada uno */}
         {detalleOrden.productos.map((producto, index) => (
             <tr key={index}>
-                <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">
-                    Producto {index + 1}
-                </td>
-                <td className="text-gray-900 font-opensans font-semibold text-right">
-                    L.{producto.subtotal}
-                </td>
             </tr>
         ))}
 
