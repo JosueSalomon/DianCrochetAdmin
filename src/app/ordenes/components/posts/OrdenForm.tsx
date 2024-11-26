@@ -100,6 +100,11 @@ export default function Dashboard() {
     actualizarRangoFechas(rangoInicial.inicio, rangoInicial.fin);
   }, []);
   
+  const formatDate = (fecha: string): string => {
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES'); // Formato de fecha en español (día/mes/año)
+  };
+  
 
   // Ejecutar al cargar la página
   useEffect(() => {
@@ -180,7 +185,7 @@ export default function Dashboard() {
                 onClick={() => detailsClick(orden.id_factura)}
               >
                 <td className="p-4">#{orden.codigo_fact}</td>
-                <td className="p-4">{new Date(orden.fecha_fact).toLocaleDateString("es-ES", {day: "2-digit",month: "2-digit",year: "numeric" })}</td>
+                <td className="p-4">{formatDate(orden.fecha_fact)}</td>
                 <td className="p-4">{orden.nombre}</td>
                 <td className="p-4 flex items-center">
                   <GrStatusGoodSmall
