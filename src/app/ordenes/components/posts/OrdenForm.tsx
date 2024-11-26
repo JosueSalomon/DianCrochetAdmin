@@ -95,7 +95,7 @@ export default function Dashboard() {
     // Simula un rango de fechas inicial al cargar el componente
     const rangoInicial = {
       inicio: "2024-11-01",
-      fin: "2024-11-30",
+      fin: "2024-11-29",
     };
     actualizarRangoFechas(rangoInicial.inicio, rangoInicial.fin);
   }, []);
@@ -181,7 +181,7 @@ export default function Dashboard() {
                 onClick={() => detailsClick(orden.id_factura)}
               >
                 <td className="p-4">#{orden.codigo_fact}</td>
-                <td className="p-4">{orden.fecha_fact}</td>
+                <td className="p-4">{new Date(orden.fecha_fact).toLocaleDateString('es-ES')}</td>
                 <td className="p-4">{orden.nombre}</td>
                 <td className="p-4 flex items-center">
                   <GrStatusGoodSmall
