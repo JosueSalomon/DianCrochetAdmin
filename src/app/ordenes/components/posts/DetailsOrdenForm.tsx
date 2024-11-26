@@ -232,7 +232,7 @@ if (!detalleOrden || !ordenId) {
                 <th className="border-b p-3">Nombre producto</th>
                 <th className="border-b p-3">Orden ID</th>
                 <th className="border-b p-3">Cantidad</th>
-                <th className="border-b p-3">Precio</th>
+                <th className="border-b p-3">Precio unitario</th>
                 <th className="border-b p-3">Total</th>
             </tr>
         </thead>
