@@ -40,11 +40,16 @@ export default function Dashboard() {
       const body: Record<string, any> = {
         columna_ordenamiento: "FECHA_FACT", // Ordenamiento siempre por fecha
       };
-
-      // Agregar valores según estado o dirección de ordenamiento seleccionados
-      if (idEstado) body.idEstado = idEstado;
-      if (direccionOrdenamiento) body.direccion_ordenamiento = direccionOrdenamiento;
-
+  
+      // Solo agregar idEstado si no es null
+      if (idEstado !== null) {
+        body.idEstado = idEstado;
+      }
+  
+      if (direccionOrdenamiento) {
+        body.direccion_ordenamiento = direccionOrdenamiento;
+      }
+  
       const response = await fetch(
         "https://deploybackenddiancrochet.onrender.com/admin/ordenes",
         {
@@ -55,18 +60,18 @@ export default function Dashboard() {
           body: JSON.stringify(body),
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Error al obtener las órdenes");
       }
-
+  
       const data = await response.json();
       setOrdenes(data.ordenes);
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
+  
   // Obtener estados de las facturas
   const fetchEstados = async () => {
     try {
@@ -132,7 +137,7 @@ export default function Dashboard() {
     <div className="flex justify-between items-center mb-4">
       <h1 className="font-rubik font-black text-lg">Ordenes</h1>
       <div className="font-rubik ">
-      <label>Estado: </label>
+      <label>Ordenar Por Estado: </label>
         <select
         className="border-none bg-gray-100 rounded-md"
           value={idEstado ?? ""}
