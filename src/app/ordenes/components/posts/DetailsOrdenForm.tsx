@@ -167,26 +167,35 @@ useEffect(() => {
 
 const handlePrint = async () => {
     const element1 = document.getElementById("Primary");
-const element2 = document.getElementById("Second");
+    const element2 = document.getElementById("Second");
 
-if (!element1 || !element2) return;
+    if (!element1 || !element2) return;
 
-const canvas1 = await html2canvas(element1);
-const canvas2 = await html2canvas(element2);
+    // Generar el canvas para ambos elementos
+    const canvas1 = await html2canvas(element1);
+    const canvas2 = await html2canvas(element2);
 
-const imgData1 = canvas1.toDataURL("image/png");
-const imgData2 = canvas2.toDataURL("image/png");
+    const imgData1 = canvas1.toDataURL("image/png");
+    const imgData2 = canvas2.toDataURL("image/png");
 
-const pdf = new jsPDF("p", "mm", "a4");
-const pdfWidth = pdf.internal.pageSize.getWidth();
-const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
-const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
 
-pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
-pdf.addPage();
-pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight2);
+    // Calcular las alturas de las imágenes en función de sus anchos
+    const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
+    const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
 
-pdf.save(`Orden-${ordenId}.pdf`);
+    // Agregar la primera imagen en el PDF
+    pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
+
+    // Agregar una nueva página antes de la segunda imagen
+    pdf.addPage();
+
+    // Agregar la segunda imagen en la nueva página
+    pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight2);
+
+    // Guardar el PDF con el nombre de la orden
+    pdf.save(`Orden-${ordenId}.pdf`);
 };
 
 if (!detalleOrden || !ordenId) {
