@@ -166,17 +166,27 @@ useEffect(() => {
 };
 
 const handlePrint = async () => {
-    const element = document.getElementById("Primary");
-    if (!element) return;
+    const element1 = document.getElementById("Primary");
+const element2 = document.getElementById("Second");
 
-    const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+if (!element1 || !element2) return;
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`Orden-${ordenId}.pdf`);
+const canvas1 = await html2canvas(element1);
+const canvas2 = await html2canvas(element2);
+
+const imgData1 = canvas1.toDataURL("image/png");
+const imgData2 = canvas2.toDataURL("image/png");
+
+const pdf = new jsPDF("p", "mm", "a4");
+const pdfWidth = pdf.internal.pageSize.getWidth();
+const pdfHeight1 = (canvas1.height * pdfWidth) / canvas1.width;
+const pdfHeight2 = (canvas2.height * pdfWidth) / canvas2.width;
+
+pdf.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight1);
+pdf.addPage();
+pdf.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight2);
+
+pdf.save(`Orden-${ordenId}.pdf`);
 };
 
 if (!detalleOrden || !ordenId) {
@@ -239,7 +249,7 @@ if (!detalleOrden || !ordenId) {
         </div>
   </div>
 
-  <div className="w-full bg-white rounded-md p-5 flex flex-col h-auto text-gray-950 mt-3" id="Primary">
+  <div className="w-full bg-white rounded-md p-5 flex flex-col h-auto text-gray-950 mt-3" id="Second">
     <header className="flex justify-center border-b font-rubik font-semibold text-xl text-gray-900">Productos</header>
     <div className="max-h-96 overflow-y-auto mt-2 w-full">
     <table className="w-full">
