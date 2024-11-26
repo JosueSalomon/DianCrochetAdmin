@@ -131,6 +131,7 @@ export default function Dashboard() {
       <div className="font-rubik ">
       <label>Estado: </label>
         <select
+        className="border-none bg-gray-200"
           value={idEstado ?? ""}
           onChange={(e) => setIdEstado(e.target.value ? parseInt(e.target.value) : null)}
         >
@@ -146,6 +147,7 @@ export default function Dashboard() {
       <div className="font-rubik ">
        <label>Dirección de Ordenamiento: </label>
         <select
+        className="border-none bg-gray-200"
           value={direccionOrdenamiento}
           onChange={(e) => setDireccionOrdenamiento(e.target.value as "asc" | "desc" | "")}
         >
