@@ -185,7 +185,7 @@ if (!detalleOrden || !ordenId) {
 
     
     return (
-        <div id="Primary" className="flex flex-col justify-start items-start w-full h-full  p-5">
+        <div className="flex flex-col justify-start items-start w-full h-full  p-5">
   {/* Encabezado */}
   <div id="header" className="text-gray-950 mb-5 w-full">
     <h1 className="font-rubik text-3xl font-semibold mb-3">Detalles orden</h1>
@@ -195,7 +195,7 @@ if (!detalleOrden || !ordenId) {
   </div>
 
   {/* Contenedor de órdenes */}
-  <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950">
+  <div className="w-full bg-white rounded-md p-5 flex flex-col h-full text-gray-950" id="Primary">
         <div>
             <header>
                 <h1 className="flex items-center font-rubik font-semibold text-2xl text-gray-800">Orden ID: #{ordenId} <div className="ml-2 border-solid border-2 p-2 rounded-md font-opensans font-semibold text-white text-sm" style={{ backgroundColor: detalleOrden.cliente.color }}>{detalleOrden.cliente.estado_fact}</div></h1>
@@ -239,7 +239,7 @@ if (!detalleOrden || !ordenId) {
         </div>
   </div>
 
-  <div className="w-full bg-white rounded-md p-5 flex flex-col h-auto text-gray-950 mt-3">
+  <div className="w-full bg-white rounded-md p-5 flex flex-col h-auto text-gray-950 mt-3" id="Primary">
     <header className="flex justify-center border-b font-rubik font-semibold text-xl text-gray-900">Productos</header>
     <div className="max-h-96 overflow-y-auto mt-2 w-full">
     <table className="w-full">
