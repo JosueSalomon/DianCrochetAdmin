@@ -143,7 +143,6 @@ export default function Dashboard() {
           value={idEstado ?? ""}
           onChange={(e) => setIdEstado(e.target.value ? parseInt(e.target.value) : null)}
         >
-          <option value="">Todos</option>
           {estados.map((estado) => (
             <option key={estado.ID_ESTADO_FACT} value={estado.ID_ESTADO_FACT}>
               {estado.ESTADO_FACT}
