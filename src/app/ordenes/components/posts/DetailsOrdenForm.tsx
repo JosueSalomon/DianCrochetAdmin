@@ -299,45 +299,50 @@ if (!detalleOrden || !ordenId) {
     </div>
     <div className="flex justify-end mt-2">
     <table className="table-auto">
-        <tbody>
-                {detalleOrden.productos.map((producto, index) => (
-                        <tr key={index}>
-                            <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">Subtotal:</td>
-                            <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{producto.subtotal}
-                            </td>
-                        </tr>
-                 ))}
-                {detalleOrden.productos.map((producto, index) => (
-                        <tr key={index}>
-                            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
-                            <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{producto.impuesto.toFixed(2)}
-                            </td>
-                        </tr>
-                         ))}
-                        <tr>
-                            <td className="text-gray-700 font-opensans font-semibold text-left">Descuento:</td>
-                            <td className="text-gray-900 font-opensans font-semibold text-right">L.0.00</td>
-                        </tr>
-                        {detalleOrden.productos.map((producto, index) => (
-                        <tr key={index}>
-                            <td className="text-gray-700 font-opensans font-semibold text-left">Envio:</td>
-                            <td className="text-gray-900 font-opensans font-semibold text-right">
-                                L.{producto.precio_envio.toFixed(2)}
-                            </td>
-                        </tr>
-                        ))}
-                        {detalleOrden.productos.map((producto, index) => (
-                        <tr className="border-t" key={index}>
-                            <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
-                            <td className="text-gray-900 text-lg font-black pt-3 text-right">
-                                L.{producto.total.toFixed(2)}
-                            </td>
-                        </tr>
-                        ))}
-        </tbody>
-    </table>
+    <tbody>
+        {/* Solo iterar sobre los productos para mostrar los detalles de cada uno */}
+        {detalleOrden.productos.map((producto, index) => (
+            <tr key={index}>
+                <td className="text-gray-700 font-opensans font-semibold w-3/4 text-left">
+                    Producto {index + 1}
+                </td>
+                <td className="text-gray-900 font-opensans font-semibold text-right">
+                    L.{producto.subtotal}
+                </td>
+            </tr>
+        ))}
+
+        {/* Mostrar los valores únicos fuera del ciclo map */}
+        <tr>
+            <td className="text-gray-700 font-opensans font-semibold text-left">Subtotal:</td>
+            <td className="text-gray-900 font-opensans font-semibold text-right">
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.subtotal, 0).toFixed(2)}
+            </td>
+        </tr>
+        <tr>
+            <td className="text-gray-700 font-opensans font-semibold text-left">ISV (15%):</td>
+            <td className="text-gray-900 font-opensans font-semibold text-right">
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.impuesto, 0).toFixed(2)}
+            </td>
+        </tr>
+        <tr>
+            <td className="text-gray-700 font-opensans font-semibold text-left">Descuento:</td>
+            <td className="text-gray-900 font-opensans font-semibold text-right">L.0.00</td>
+        </tr>
+        <tr>
+            <td className="text-gray-700 font-opensans font-semibold text-left">Envio:</td>
+            <td className="text-gray-900 font-opensans font-semibold text-right">
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.precio_envio, 0).toFixed(2)}
+            </td>
+        </tr>
+        <tr className="border-t">
+            <td className="text-gray-700 font-semibold text-left text-lg pt-3">Total:</td>
+            <td className="text-gray-900 text-lg font-black pt-3 text-right">
+                L.{detalleOrden.productos.reduce((total, producto) => total + producto.total, 0).toFixed(2)}
+            </td>
+        </tr>
+    </tbody>
+</table>
 </div>
 
 
