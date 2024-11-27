@@ -29,6 +29,7 @@ interface Producto {
     total: number;
     nombre_prod: string;
     precio_prod: number;
+    precio_unitario: number;
     cantidad_productos: number;
     total_productos: number;
     color: string;
@@ -289,7 +290,7 @@ if (!detalleOrden || !ordenId) {
                      <td className="border-b p-3">{producto.nombre_prod}</td>
                      <td className="border-b p-3">{detalleOrden.cliente.id_orden_paypal}</td>
                      <td className="border-b p-3">{producto.cantidad_productos}</td>
-                     <td className="border-b p-3">L.{producto.precio_prod/producto.cantidad_productos}</td>
+                     <td className="border-b p-3">L.{producto.precio_unitario}</td>
                      <td className="border-b p-3">L.{producto.precio_prod}</td>
                  </tr>
              ))}
