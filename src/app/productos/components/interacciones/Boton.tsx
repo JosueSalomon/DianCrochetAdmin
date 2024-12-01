@@ -31,6 +31,15 @@ export default function Boton() {
         }
     };
 
+    const handleCreateKit = () => {
+        if (isUserLoggedIn()) {
+            router.push('/createKit');
+        } else {
+            console.log("No hay datos en localStorage. Navegación bloqueada.");
+            alert("Debes iniciar sesión para realizar esta acción.");
+        }
+    };
+
     return (
         <div className="w-full h-full flex">
             <button
@@ -42,11 +51,19 @@ export default function Boton() {
             </button>
 
             <button
-                className="w-[50%] font-lekton size-8 py-1 px-3 bg-[#C68EFE] hover:bg-[#b067f8] rounded-md shadow-lg text-white font-semibold transition duration-200 text-base"
+                className="w-[50%] font-lekton size-8  mr-2 py-1 px-3 bg-[#C68EFE] hover:bg-[#b067f8] rounded-md shadow-lg text-white font-semibold transition duration-200 text-base"
                 type="button"
                 onClick={handleCreateMaterial}
             >
                 <p className="">+ Material</p>
+            </button>
+
+            <button
+                className="w-[50%] font-lekton mr-2 size-8 py-1 px-3 bg-[#C68EFE] hover:bg-[#b067f8] rounded-md shadow-lg text-white font-semibold transition duration-200 text-base"
+                type="button"
+                onClick={handleCreateKit}
+            >
+                <p className="">+ Kit</p>
             </button>
         </div>
     );
