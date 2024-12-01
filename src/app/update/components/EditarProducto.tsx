@@ -36,7 +36,7 @@ export default function EditarProducto ({ id }: EditarMaterialProps) {
   const [productType, setProductType] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
   const formattedKeywords = keywords && keywords.length > 0 ? keywords : null; // Asegurarse que sea null si está vacío
-    useEffect(() => {   // ID de prueba
+    useEffect(() => {   
       const loadProductoInfo = async () => {
         const response = await fetchProductMaterial(id);
   

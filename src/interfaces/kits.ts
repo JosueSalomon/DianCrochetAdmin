@@ -8,7 +8,8 @@ export interface Kit {
     keywords?: string[] | null; // Puede ser un array de strings o nulo
     url_imagen_principal: string;
     url_imagen_miniaturas?: string[] | null; // Puede ser un array de strings o nulo
-    url_tutorial: string;
+    url_patron: string;
+    url_tutorial:string;
   }
 
 export interface Category {

@@ -4,30 +4,37 @@ import UploadModal from "./subirFotos_kit";
 import Image from 'next/image';
 import { createKit } from "@services/kits";
 import { Kit, Category } from "@interfaces/kits"; 
+import Modal from "./modal";
+import SubirPdf from "./subirPdf";
+
+
 
 const KitsForm: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [isCreatingProduct, setIsCreatingProduct] = useState(false);
   const [productType, setProductType] = useState("Kit");
   const [mainImage, setMainImage] = useState<string | null>(null);
-  const [pdfKit, setPdfKit] = useState<string | null>(null);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"main" | "gallery" | "pdf">();
-
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+  const [pdfKit, setPdfKit] = useState<string | null>(null);
   const [nombre_prod, setNombre_prod] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
   const [cantidad_total, setCantidad_total] = useState("");
   const [keywordInput, setkeywordInput] = useState("");
   const [keywords, setkeywords] = useState<string[] | null>([]); 
-
+  
   // Estados para manejar las categorías y el menú
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const formattedKeywords = keywords && keywords.length > 0 ? keywords : null;
+
+
+
     // Carga de categorías
     useEffect(() => {
       const getCategories = async () => {
@@ -60,6 +67,18 @@ const KitsForm: React.FC = () => {
       );
     };
 	
+     // Función para abrir el modal del PDF
+      const handleOpenPdfModal = () => setIsPdfModalOpen(true);
+      // Función para cerrar el modal del PDF
+      const handleClosePdfModal = () => setIsPdfModalOpen(false);
+
+      // Función para manejar la URL del PDF cargado
+      const handlePdfUpload = (url: string) => {
+        setPdfKit(url);
+        handleClosePdfModal();
+      };
+
+
   const handleRemoveGalleryImage = (url: string) => {
     setGalleryImages((prevImages) => prevImages.filter((img) => img !== url));
   };
@@ -122,8 +141,9 @@ const KitsForm: React.FC = () => {
           categorias: selectedCategoryIds,
           url_imagen_principal: mainImage || "",
           url_imagen_miniaturas: galleryImages.length > 0 ? galleryImages : null,
-          url_tutorial: pdfKit || "",
+          url_patron: pdfKit || "",
           descripcion,
+          url_tutorial:"",
           keywords: formattedKeywords,
         };
         console.log("Enviando Kit", newProduct);
@@ -371,19 +391,24 @@ const KitsForm: React.FC = () => {
           </div>
           {/* PDF UPLOAD */}
           <div>
+          <div>
             <label className="block text-sm font-medium text-gray-700">Tutorial del Kit/PDF</label>
             <div
-                className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
-                onClick={() => handleOpenModal("pdf")}
+              className="mt-2 border-dashed border-2 border-gray-300 p-4 text-center cursor-pointer"
+              onClick={handleOpenPdfModal} // Función para abrir el modal del PDF
             >
-                {pdfKit ? (
+              {pdfKit ? (
                 <p className="text-sm text-gray-600">Archivo subido</p>
-                ) : (
+              ) : (
                 <p>Click para cargar el PDF</p>
-                )}
+              )}
             </div>
-            </div>
-
+          </div>
+              {/* Modal exclusivo para cargar el PDF */}
+            <Modal isVisible={isPdfModalOpen} onClose={handleClosePdfModal}>
+              <SubirPdf onSubmit={handlePdfUpload} nombre_prod={nombre_prod} setNombre_prod={setNombre_prod} />
+            </Modal>
+          </div>
         </div>
 
         {/* Action Buttons */}
@@ -437,5 +462,4 @@ const KitsForm: React.FC = () => {
     </div>
   );
 };
-
 export default KitsForm;
