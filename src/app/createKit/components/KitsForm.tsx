@@ -406,7 +406,8 @@ const KitsForm: React.FC = () => {
           </div>
               {/* Modal exclusivo para cargar el PDF */}
             <Modal isVisible={isPdfModalOpen} onClose={handleClosePdfModal}>
-              <SubirPdf onSubmit={handlePdfUpload} nombre_prod={nombre_prod} setNombre_prod={setNombre_prod} />
+              <SubirPdf onSubmit={handlePdfUpload} nombre_prod={nombre_prod} setNombre_prod={setNombre_prod}
+              initialUploadedFileUrl={pdfKit} />
             </Modal>
           </div>
         </div>

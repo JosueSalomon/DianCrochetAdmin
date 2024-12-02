@@ -501,9 +501,11 @@ export default function EditarKit ({ id }: EditarMaterialProps) {
             </div>
             {/* Modal exclusivo para cargar el PDF */}
             <Modal isVisible={isPdfModalOpen} onClose={handleClosePdfModal}>
+              
                 <SubirPdf
                 onSubmit={handlePdfUpload}
-                initialUploadedFileUrl={pdfKit} // Pasar la URL del archivo cargado
+                initialUploadedFileUrl={pdfKit}
+                nombre_prod={productoInfo?.nombre_prod|| "" } // Pasar la URL del archivo cargado
                 />
             </Modal>
           </div>

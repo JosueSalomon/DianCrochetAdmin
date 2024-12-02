@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 
 type SubirPdfProps = {
   onSubmit: (url: string) => void;
-  initialUploadedFileUrl?: string | null; // URL inicial del archivo cargado
+  initialUploadedFileUrl?: string | null;
+  nombre_prod: string; // URL inicial del archivo cargado
 };
 
-export default function SubirPdf({ onSubmit, initialUploadedFileUrl }: SubirPdfProps) {
+export default function SubirPdf({ onSubmit, initialUploadedFileUrl,nombre_prod }: SubirPdfProps) {
   const [file, setFile] = useState<File | null>(null);
-  const [nombreArchivo, setNombreArchivo] = useState('');
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(initialUploadedFileUrl || null); // Estado inicial
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +31,7 @@ export default function SubirPdf({ onSubmit, initialUploadedFileUrl }: SubirPdfP
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('nombre_archivo', nombreArchivo);
+    formData.append('nombre_archivo', nombre_prod);
 
     setIsLoading(true);
 
@@ -84,16 +84,6 @@ export default function SubirPdf({ onSubmit, initialUploadedFileUrl }: SubirPdfP
             </button>
           </div>
         )}
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Nombre del archivo</label>
-        <input
-          type="text"
-          value={nombreArchivo}
-          onChange={(e) => setNombreArchivo(e.target.value)}
-          placeholder="Escribe un nombre"
-          className="mt-2 block w-full text-sm border text-black border-gray-300 rounded-lg p-2"
-        />
       </div>
       <button
         type="submit"
