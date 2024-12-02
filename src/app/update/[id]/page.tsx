@@ -7,6 +7,7 @@ import Navbar from "components/navbar";
 import EditarMaterial from "../components/EditarMaterial";
 import EditarProducto from "../components/EditarProducto";
 import HeaderAdmin from "components/HeaderAdmin";
+import EditarKit from "../components/EditarKit";
 
 
 // Define el tipo de la estructura de la respuesta de la API
@@ -25,6 +26,7 @@ interface ProductoInfo {
   nombre_marca: string | null;
   categorias: string[];
   keywords: string[];
+  url_patron:string[] | null;
 }
 
 interface ProductoResponse {
@@ -93,8 +95,10 @@ export default function Dashboard() {
             <EditarMaterial id={id as string} />
           ) : tipoProd === "Producto" ? (
             <EditarProducto id={id as string} />
-          ) : (
-            <p>Tipo de producto no soportado</p>
+          ) : tipoProd === "Kit" ? (
+            <EditarKit id={id as string} />
+          ):(
+            <p>Tipo de Producto no soportado</p>
           )}
         </div>
       </main>

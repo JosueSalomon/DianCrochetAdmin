@@ -60,6 +60,7 @@ export interface ProductWithSize {
       nombre_marca: string;
       categorias:string[];
       keywords: string[] | null;
+      url_patron:string | null;
     };
   }
 
