@@ -455,7 +455,7 @@ const KitsForm: React.FC = () => {
                   message="¡Éxito!"
                   subMessage="Kit creado correctamente."
                   onClose={() => setShowSuccessMessage(false)}
-                  duration={8000} // Mensaje visible por 8 segundos
+                  duration={5000} // Mensaje visible por 8 segundos
                 />
               )}
             </div>
