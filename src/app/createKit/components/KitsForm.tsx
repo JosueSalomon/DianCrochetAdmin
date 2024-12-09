@@ -6,7 +6,6 @@ import { createKit } from "@services/kits";
 import { Kit, Category } from "@interfaces/kits"; 
 import Modal from "./modal";
 import SubirPdf from "./subirPdf";
-import SuccessAlert from "./SuccessAlert";
 
 
 
@@ -33,7 +32,7 @@ const KitsForm: React.FC = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const formattedKeywords = keywords && keywords.length > 0 ? keywords : null;
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
 
 
     // Carga de categorías
@@ -163,27 +162,17 @@ const KitsForm: React.FC = () => {
   const handleCreateProduct = () => {
     if (!mainImage) {
       alert("Debes cargar una imagen principal antes de continuar.");
-      return;
+      return; // Detén la ejecución si no hay imagen
     }
 
     if (!pdfKit) {
-      alert("Debes cargar un tutorial antes de continuar");
-      return;
-    }
-
+        alert("Debes cargar un tutorial antes de continuar");
+        return; // Detén la ejecución si no hay imagen
+      }
+  
+    console.log("Create button clicked, setting isCreatingProduct to true");
     setIsCreatingProduct(true);
-
-    // Simula el proceso de creación
-    setTimeout(() => {
-      setShowSuccessMessage(true);
-      setIsCreatingProduct(false);
-
-      // Redirige después de 3 segundos
-      setTimeout(() => {
-        window.location.href =
-          "https://diancrochet-administrador.vercel.app/productos";
-      }, 3000);
-    }, 1000);
+    formRef.current?.requestSubmit(); // Envía el formulario si pasa la validación
   };
 
   const resetForm = () => {
@@ -434,31 +423,20 @@ const KitsForm: React.FC = () => {
           >
             Volver
           </button>
-            
-          <div className="relative">
-              <button
-                type="button"
-                disabled={!mainImage || isCreatingProduct}
-                className={`px-4 py-2 rounded-lg ${
-                  mainImage
-                    ? "bg-black text-white hover:bg-gray-800"
-                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
-                }`}
-                onClick={handleCreateProduct}
-              >
-                Crear
-              </button>
+          <button
+              type="button"
+              disabled={!mainImage}
+              className={`px-4 py-2 rounded-lg ${
+                mainImage
+                  ? "bg-black text-white hover:bg-gray-800"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
+              onClick={handleCreateProduct}
+               // Deshabilita el botón si no hay imagen
+            >
+              Crear
+            </button>
 
-              {/* Mostrar el mensaje de éxito si corresponde */}
-              {showSuccessMessage && (
-                <SuccessAlert
-                  message="¡Éxito!"
-                  subMessage="Kit creado correctamente."
-                  onClose={() => setShowSuccessMessage(false)}
-                  duration={8000} // Mensaje visible por 8 segundos
-                />
-              )}
-            </div>
         </div>
       </form>
 
