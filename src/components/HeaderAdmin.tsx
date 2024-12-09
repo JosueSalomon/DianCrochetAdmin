@@ -14,7 +14,7 @@ export default function HeaderBar() {
     };
 
     return (
-        <div className='w-screen h-auto fixed top-0 left-0 bg-white p-5 shadow-lg border-gray-300 border-solid border font-rubik'>
+        <div className='z-50 w-screen h-auto fixed top-0 left-0 bg-white p-5 shadow-lg border-gray-300 border-solid border font-rubik'>
             <div className='flex flex-col flex-nowrap justify-center items-end content-stretch'>
                 <button
                     type="button"
